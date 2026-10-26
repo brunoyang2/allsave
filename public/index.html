@@ -425,12 +425,15 @@
           <span>O anúncio financia nossos servidores gratuitos de alta velocidade.</span>
         </div>
         <button 
-          id="btnForceCompleteAd" 
-          onclick="pularAnuncioDebug()"
-          title="Modo teste / pular para download"
-          class="text-[11px] text-slate-500 hover:text-slate-300 underline underline-offset-2 ml-2"
+          id="btnPularCancelarAd" 
+          onclick="cancelarAnuncio()"
+          title="Interromper anúncio e cancelar download"
+          class="text-[11px] font-bold text-rose-400 hover:text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 active:scale-95 ml-2"
         >
-          Pular
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          <span>Pular (Cancela Download)</span>
         </button>
       </div>
 
@@ -684,6 +687,18 @@
 
   <!-- SCRIPT FRONT-END (VANILLA JAVASCRIPT) -->
   <script>
+    // ==========================================
+    // CONFIGURAÇÃO DE ANÚNCIOS REAIS (MONETIZAÇÃO)
+    // ==========================================
+    const AD_CONFIG = {
+      // 1. Cole aqui a sua VAST Tag oficial da Adsterra, Monetag, ExoClick ou Google Ad Manager:
+      vastTagUrl: '', 
+      // 2. Tempo mínimo obrigatório que o usuário DEVE assistir para liberar o download:
+      requiredWatchSeconds: 6,
+      // 3. Vídeo MP4 de demonstração (usado enquanto não houver VAST Tag configurada):
+      fallbackVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    };
+
     // ESTADO DA APLICAÇÃO
     const state = {
       currentSession: null, // { token, plataforma, titulo, thumbnail }
@@ -692,9 +707,9 @@
         currentStep: 1,
         targetFormat: null,
         timerInterval: null,
-        timeLeft: 6,
+        timeLeft: AD_CONFIG.requiredWatchSeconds,
         isMuted: true,
-        durationPerStep: 6, // segundos por anúncio de demonstração
+        durationPerStep: AD_CONFIG.requiredWatchSeconds,
       }
     };
 
@@ -1133,9 +1148,25 @@
       }
     }
 
-    function pularAnuncioDebug() {
+    // CANCELA E BLOQUEIA O DOWNLOAD CASO O USUÁRIO PULE O ANÚNCIO
+    function cancelarAnuncio() {
       if (state.ad.timerInterval) clearInterval(state.ad.timerInterval);
-      concluirEtapaAtual();
+      try {
+        adVideoPlayer.pause();
+        adVideoPlayer.currentTime = 0;
+      } catch (e) {}
+
+      // Reseta o estado do anúncio sem disparar nenhum download!
+      state.ad.currentStep = 1;
+      state.ad.targetFormat = null;
+      fecharModalAnuncio();
+
+      // Notifica o usuário de forma enfática sobre a obrigatoriedade
+      mostrarAlerta(
+        'Download Cancelado!',
+        'Você pulou o anúncio. É <strong>obrigatório assistir ao anúncio completo</strong> para liberar o download em alta definição gratuitamente.',
+        'erro'
+      );
     }
 
     // DISPARADOR DE DOWNLOAD AUTOMÁTICO
