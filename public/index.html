@@ -20,8 +20,9 @@
   <!-- Favicon SVG -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2306b6d4'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z'/></svg>">
 
-  <!-- Adsterra Monetization Script (Social Bar) -->
+  <!-- Adsterra Monetization Scripts -->
   <script data-cfasync="false" src="https://bicea.org/14/aed8a7256e3ccac0b72d0bb213f70622"></script>
+  <script data-cfasync="false" src="https://afders.org/1/1a38bdd16f58578a723320a902840a8c"></script>
 
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -363,7 +364,7 @@
         <div id="adProgressBar" class="h-full bg-gradient-to-r from-cyan-500 via-emerald-400 to-cyan-400 w-0 transition-all duration-200"></div>
       </div>
 
-      <!-- Player de Vídeo HTML5 (Preparado para VAST Tag / Sample MP4) -->
+      <!-- Player de Vídeo e Anúncio Patrocinado Adsterra -->
       <div class="relative aspect-video bg-black flex items-center justify-center overflow-hidden">
         
         <video 
@@ -375,6 +376,14 @@
           src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
         >
         </video>
+
+        <!-- Selo de Patrocinador Oficial Adsterra -->
+        <div class="absolute top-3 left-3 z-10 pointer-events-none">
+          <span class="px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-md bg-black/70 text-amber-300 border border-amber-500/30 flex items-center gap-1 shadow-lg">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+            Anúncio Patrocinado
+          </span>
+        </div>
 
         <!-- Overlay de Som / Desmutar -->
         <button 
