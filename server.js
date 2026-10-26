@@ -116,9 +116,47 @@ async function extractTikTok(url) {
   }
 }
 
+// Extração dedicada Instagram via RapidAPI (Kk Creation - sem necessidade de cookies)
+async function extractInstagram(url) {
+  if (!process.env.RAPIDAPI_KEY) return null;
+  try {
+    const { data } = await axios.get(
+      'https://instagram-downloader-download-instagram-stories-videos4.p.rapidapi.com/convert',
+      {
+        params: { url },
+        timeout: 20000,
+        headers: {
+          'x-rapidapi-key': process.env.RAPIDAPI_KEY,
+          'x-rapidapi-host': 'instagram-downloader-download-instagram-stories-videos4.p.rapidapi.com',
+        },
+      }
+    );
+    if (data && Array.isArray(data.media) && data.media.length > 0) {
+      const item = data.media.find((m) => m.type === 'video') || data.media[0];
+      if (item && item.url) {
+        return {
+          titulo: `Instagram ${item.type === 'video' ? 'Reels' : 'Post'}`,
+          thumbnail: item.thumbnail || item.url,
+          links: { video_hd: item.url },
+          headers: {},
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('[Instagram API]', err.message);
+  }
+  return null;
+}
+
 // Extração Instagram / Facebook (RapidAPI se configurada, ou yt-dlp local sem chave)
 async function extractMeta(url, plataforma) {
-  // 1. Se a chave RAPIDAPI_KEY existir, tenta primeiro a RapidAPI
+  // 1. Se for Instagram, usa a API especializada em Reels/Stories
+  if (plataforma === 'instagram' && process.env.RAPIDAPI_KEY) {
+    const igResult = await extractInstagram(url);
+    if (igResult) return igResult;
+  }
+
+  // 2. Se for Facebook (ou fallback), usa a API Social Download All In One
   if (process.env.RAPIDAPI_KEY) {
     try {
       const { data } = await axios.post(
@@ -147,11 +185,11 @@ async function extractMeta(url, plataforma) {
         }
       }
     } catch (err) {
-      console.warn('[RapidAPI] Erro ao consultar API, usando yt-dlp local...', err.message);
+      console.warn('[RapidAPI Meta]', err.message);
     }
   }
 
-  // 2. Fallback imediato para o motor local yt-dlp (Gratuito, sem necessidade de chave)
+  // 3. Fallback imediato para o motor local yt-dlp
   return await extractWithYtDlp(url);
 }
 
