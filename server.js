@@ -232,4 +232,8 @@ app.get('/api/download/:token/:formato', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`AllSave rodando em http://localhost:${PORT}`));
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`AllSave rodando em http://localhost:${PORT}`));
+}
+
+module.exports = app;
