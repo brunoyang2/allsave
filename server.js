@@ -116,17 +116,19 @@ async function extractTikTok(url) {
   }
 }
 
-// Extração dedicada Instagram via RapidAPI (Kk Creation - sem necessidade de cookies)
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY || '353dc56353mshd05a55207355d90p17d18fjsndffbf9ceab6c';
+
+// Extração dedicada Instagram via RapidAPI (Kk Creation)
 async function extractInstagram(url) {
-  if (!process.env.RAPIDAPI_KEY) return null;
+  if (!RAPIDAPI_KEY) return null;
   try {
     const { data } = await axios.get(
       'https://instagram-downloader-download-instagram-stories-videos4.p.rapidapi.com/convert',
       {
         params: { url },
-        timeout: 20000,
+        timeout: 15000,
         headers: {
-          'x-rapidapi-key': process.env.RAPIDAPI_KEY,
+          'x-rapidapi-key': RAPIDAPI_KEY,
           'x-rapidapi-host': 'instagram-downloader-download-instagram-stories-videos4.p.rapidapi.com',
         },
       }
@@ -143,21 +145,21 @@ async function extractInstagram(url) {
       }
     }
   } catch (err) {
-    console.warn('[Instagram API]', err.message);
+    console.warn('[Instagram API 1]', err.message);
   }
   return null;
 }
 
-// Extração Instagram / Facebook (RapidAPI se configurada, ou yt-dlp local sem chave)
+// Extração Instagram / Facebook (RapidAPI prioritária, com fallback inteligente)
 async function extractMeta(url, plataforma) {
-  // 1. Se for Instagram, usa a API especializada em Reels/Stories
-  if (plataforma === 'instagram' && process.env.RAPIDAPI_KEY) {
+  // 1. Tenta API especializada se for Instagram
+  if (plataforma === 'instagram' && RAPIDAPI_KEY) {
     const igResult = await extractInstagram(url);
     if (igResult) return igResult;
   }
 
-  // 2. Se for Facebook (ou fallback), usa a API Social Download All In One
-  if (process.env.RAPIDAPI_KEY) {
+  // 2. Tenta API Social Download All In One (Excelente para Facebook e Instagram Reels)
+  if (RAPIDAPI_KEY) {
     try {
       const { data } = await axios.post(
         'https://social-download-all-in-one.p.rapidapi.com/v1/social/autolink',
@@ -166,7 +168,7 @@ async function extractMeta(url, plataforma) {
           timeout: 20000,
           headers: {
             'Content-Type': 'application/json',
-            'x-rapidapi-key': process.env.RAPIDAPI_KEY,
+            'x-rapidapi-key': RAPIDAPI_KEY,
             'x-rapidapi-host': 'social-download-all-in-one.p.rapidapi.com',
           },
         }
@@ -178,7 +180,7 @@ async function extractMeta(url, plataforma) {
           videos.sort((a, b) => pickRes(b) - pickRes(a));
           return {
             titulo: data.title || `Vídeo do ${plataforma === 'instagram' ? 'Instagram' : 'Facebook'}`,
-            thumbnail: data.thumbnail || '',
+            thumbnail: data.thumbnail || (videos[0].thumbnail || ''),
             links: { video_hd: videos[0].url },
             headers: {},
           };
@@ -189,7 +191,12 @@ async function extractMeta(url, plataforma) {
     }
   }
 
-  // 3. Fallback imediato para o motor local yt-dlp
+  // 3. Se estiver na Vercel, o yt-dlp não existe no ambiente serverless (retorna erro amigável)
+  if (process.env.VERCEL) {
+    throw new Error(`Não foi possível extrair este vídeo do ${plataforma === 'instagram' ? 'Instagram' : 'Facebook'}. Verifique se o conteúdo é público.`);
+  }
+
+  // 4. Fallback para o motor local yt-dlp em desenvolvimento
   return await extractWithYtDlp(url);
 }
 
