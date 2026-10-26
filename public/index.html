@@ -400,9 +400,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
             </svg>
           </div>
-          <h4 class="text-lg font-extrabold text-white mb-1">Marca d'água removida!</h4>
-          <p class="text-xs text-slate-300 max-w-xs">
-            Preparando a qualidade máxima 1080p na etapa final...
+          <h4 id="adTransitionTitle" class="text-lg font-extrabold text-white mb-1">Processando liberação...</h4>
+          <p id="adTransitionSub" class="text-xs text-slate-300 max-w-xs">
+            Preparando a etapa final do download...
           </p>
         </div>
 
@@ -987,7 +987,7 @@
 
       } else {
         // INSTAGRAM OU FACEBOOK
-        // 1. Botão Destaque: "Baixar Vídeo em Full HD 1080p (MP4)" -> 1 anúncio
+        // Botão Destaque: Exige 2 etapas de anúncios por padrão
         const btnDestaque = document.createElement('button');
         btnDestaque.type = 'button';
         btnDestaque.className = 'w-full p-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-white font-extrabold flex items-center justify-between shadow-xl shadow-cyan-500/20 transition-all duration-200 active:scale-[0.99] group text-left';
@@ -1001,16 +1001,17 @@
             <div>
               <div class="flex items-center gap-2">
                 <span class="text-sm sm:text-base font-extrabold">Baixar Vídeo em Full HD 1080p (MP4)</span>
+                <span class="px-2 py-0.5 rounded-full bg-black/30 text-white text-[10px] font-black uppercase tracking-wider">Alta Resolução</span>
               </div>
-              <p class="text-xs font-medium text-cyan-100/90 mt-0.5">Qualidade máxima liberada diretamente</p>
+              <p class="text-xs font-medium text-cyan-100/90 mt-0.5">Qualidade máxima limpa • 2 Anúncios rápidos</p>
             </div>
           </div>
           <div class="text-right flex items-center gap-2">
-            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black/30 text-white">1 Anúncio</span>
+            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black/30 text-white">2 Anúncios</span>
             <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
           </div>
         `;
-        btnDestaque.onclick = () => iniciarFluxoDownload('video_hd', 1);
+        btnDestaque.onclick = () => iniciarFluxoDownload('video_hd', 2);
         downloadButtonsContainer.appendChild(btnDestaque);
       }
 
@@ -1076,10 +1077,11 @@
       adStepBadge.textContent = `Etapa ${step}/${total}`;
 
       if (total === 2) {
+        const isTikTok = state.currentSession?.plataforma === 'tiktok';
         if (step === 1) {
-          adStepTitle.textContent = "Etapa 1/2: Removendo marca d'água...";
+          adStepTitle.textContent = isTikTok ? "Etapa 1/2: Removendo marca d'água..." : "Etapa 1/2: Otimizando resolução Full HD 1080p...";
         } else {
-          adStepTitle.textContent = "Etapa 2/2: Liberando qualidade máxima 1080p...";
+          adStepTitle.textContent = isTikTok ? "Etapa 2/2: Liberando qualidade máxima 1080p..." : "Etapa 2/2: Conectando aos servidores de alta velocidade...";
         }
       } else {
         adStepTitle.textContent = "Etapa 1/1: Preparando download em alta fidelidade...";
@@ -1128,7 +1130,13 @@
 
     function concluirEtapaAtual() {
       if (state.ad.totalSteps === 2 && state.ad.currentStep === 1) {
-        // Exibe overlay de transição de 1.5s ("Marca d'água removida!")
+        const isTikTok = state.currentSession?.plataforma === 'tiktok';
+        const titleEl = document.getElementById('adTransitionTitle');
+        const subEl = document.getElementById('adTransitionSub');
+        if (titleEl) titleEl.textContent = isTikTok ? "Marca d'água removida!" : "Qualidade Full HD liberada! 🎉";
+        if (subEl) subEl.textContent = isTikTok ? "Preparando a qualidade máxima 1080p na etapa final..." : "Conectando servidores de alta velocidade na etapa final...";
+
+        // Exibe overlay de transição de 1.5s
         adTransitionOverlay.classList.remove('hidden');
         try { adVideoPlayer.pause(); } catch (e) {}
 
