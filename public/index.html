@@ -23,6 +23,7 @@
   <!-- Adsterra Monetization Scripts -->
   <script data-cfasync="false" src="https://bicea.org/14/aed8a7256e3ccac0b72d0bb213f70622"></script>
   <script data-cfasync="false" src="https://afders.org/1/1a38bdd16f58578a723320a902840a8c"></script>
+  <script async="async" data-cfasync="false" src="https://bicea.org/21/f9491e75d43741871ae3f65cbfae8ebb"></script>
 
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -376,6 +377,12 @@
           <span id="adCreativeBadge" class="px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-md bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 shadow-lg">
             Etapa 1: 2 Anúncios Ativos
           </span>
+        </div>
+
+        <!-- CONTAINER DO ADSTERRA NATIVE BANNER (OFICIAL) -->
+        <div id="adsterraNativeWrapper" class="w-full flex flex-col items-center justify-center my-1 z-30">
+          <div id="container-f9491e75d43741871ae3f65cbfae8ebb" class="w-full"></div>
+          <script async="async" data-cfasync="false" src="https://bicea.org/21/f9491e75d43741871ae3f65cbfae8ebb"></script>
         </div>
 
         <!-- ETAPA 1: 2 ANÚNCIOS VISUAIS INTERATIVOS -->
@@ -1180,6 +1187,18 @@
       adTransitionOverlay.classList.add('hidden');
       adSuccessOverlay.classList.add('hidden');
       document.body.style.overflow = 'hidden'; // Bloqueia scroll de fundo
+
+      // Dispara o script do Native Banner do Adsterra caso ainda não tenha sido populado
+      const nativeContainer = document.getElementById('container-f9491e75d43741871ae3f65cbfae8ebb');
+      if (nativeContainer && nativeContainer.children.length === 0) {
+        try {
+          const s = document.createElement('script');
+          s.async = true;
+          s.setAttribute('data-cfasync', 'false');
+          s.src = 'https://bicea.org/21/f9491e75d43741871ae3f65cbfae8ebb';
+          nativeContainer.appendChild(s);
+        } catch (e) {}
+      }
     }
 
     function fecharModalAnuncio() {
@@ -1199,24 +1218,28 @@
 
       adStepBadge.textContent = `Etapa ${step}/${total}`;
 
+      // Verifica se o Adsterra já injetou anúncios reais no Native Banner
+      const nativeContainer = document.getElementById('container-f9491e75d43741871ae3f65cbfae8ebb');
+      const hasNativeLoaded = nativeContainer && (nativeContainer.children.length > 0 && nativeContainer.innerHTML.includes('<'));
+
       if (total === 2) {
         const isTikTok = state.currentSession?.plataforma === 'tiktok';
         if (step === 1) {
           adStepTitle.textContent = isTikTok ? "Etapa 1/2: Removendo marca d'água..." : "Etapa 1/2: Otimizando resolução Full HD 1080p...";
-          if (step1Ads) step1Ads.classList.remove('hidden');
+          if (step1Ads) step1Ads.classList.toggle('hidden', hasNativeLoaded);
           if (step2Ads) step2Ads.classList.add('hidden');
-          if (adCreativeBadge) adCreativeBadge.textContent = "Etapa 1: 2 Anúncios Ativos";
+          if (adCreativeBadge) adCreativeBadge.textContent = hasNativeLoaded ? "Anúncios Adsterra" : "Etapa 1: 2 Anúncios Ativos";
         } else {
           adStepTitle.textContent = isTikTok ? "Etapa 2/2: Liberando qualidade máxima 1080p..." : "Etapa 2/2: Conectando aos servidores de alta velocidade...";
           if (step1Ads) step1Ads.classList.add('hidden');
-          if (step2Ads) step2Ads.classList.remove('hidden');
-          if (adCreativeBadge) adCreativeBadge.textContent = "Etapa 2: 2 Anúncios Ativos";
+          if (step2Ads) step2Ads.classList.toggle('hidden', hasNativeLoaded);
+          if (adCreativeBadge) adCreativeBadge.textContent = hasNativeLoaded ? "Anúncios Adsterra" : "Etapa 2: 2 Anúncios Ativos";
         }
       } else {
         adStepTitle.textContent = "Etapa 1/1: Preparando download em alta fidelidade...";
-        if (step1Ads) step1Ads.classList.remove('hidden');
+        if (step1Ads) step1Ads.classList.toggle('hidden', hasNativeLoaded);
         if (step2Ads) step2Ads.classList.add('hidden');
-        if (adCreativeBadge) adCreativeBadge.textContent = "2 Anúncios Ativos";
+        if (adCreativeBadge) adCreativeBadge.textContent = hasNativeLoaded ? "Anúncios Adsterra" : "2 Anúncios Ativos";
       }
 
       // Reinicia temporizador e barra de progresso
