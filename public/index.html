@@ -830,7 +830,7 @@
         alertIcon.innerHTML = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>`;
       }
       alertTitle.textContent = titulo;
-      alertMessage.textContent = msg;
+      alertMessage.innerHTML = msg;
     }
 
     function fecharAlerta() {
@@ -1140,19 +1140,20 @@
 
     // DISPARADOR DE DOWNLOAD AUTOMÁTICO
     function dispararDownload(url) {
-      // Criação de link temporário invisível com download
+      // Dispara o download de forma nativa e compatível com mobile/desktop
       const tempLink = document.createElement('a');
-      tempLink.style.display = 'none';
       tempLink.href = url;
       tempLink.setAttribute('download', '');
       document.body.appendChild(tempLink);
       tempLink.click();
-      
-      setTimeout(() => {
-        document.body.removeChild(tempLink);
-      }, 2000);
+      setTimeout(() => document.body.removeChild(tempLink), 2000);
 
-      mostrarAlerta('Download Iniciado!', 'Se o download não começar em instantes, clique no botão novamente.', 'info');
+      // Alerta com botão/link de clique manual direto caso o navegador bloqueie popups
+      mostrarAlerta(
+        'Download Liberado! 🎉', 
+        'A transferência foi iniciada. Se o download não começar sozinho, <a href="' + url + '" class="underline font-extrabold text-cyan-300 hover:text-white ml-1">clique aqui para baixar diretamente</a>.', 
+        'info'
+      );
     }
   </script>
 </body>

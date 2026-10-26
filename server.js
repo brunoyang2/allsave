@@ -203,6 +203,12 @@ app.get('/api/download/:token/:formato', async (req, res) => {
   const fileUrl = session.links[formato];
   if (!fileUrl) return res.status(404).send('Formato indisponível.');
 
+  // Se estiver na Vercel ou for link direto de CDN do Facebook/Instagram, redireciona diretamente!
+  // Isso evita o timeout de 10s da Vercel Serverless Function e o erro 403 Forbidden que o Facebook impõe a servidores em nuvem.
+  if (process.env.VERCEL || /fbcdn\.net|cdninstagram\.com|instagram\.com/i.test(fileUrl)) {
+    return res.redirect(302, fileUrl);
+  }
+
   try {
     const reqHeaders = {
       'User-Agent': session.headers?.['User-Agent'] || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -214,7 +220,7 @@ app.get('/api/download/:token/:formato', async (req, res) => {
       url: fileUrl,
       method: 'GET',
       responseType: 'stream',
-      timeout: 35000,
+      timeout: 25000,
       maxRedirects: 5,
       headers: reqHeaders,
     });
@@ -227,8 +233,10 @@ app.get('/api/download/:token/:formato', async (req, res) => {
     upstream.data.pipe(res);
     req.on('close', () => upstream.data.destroy());
   } catch (err) {
-    console.error('[download]', err.message);
-    if (!res.headersSent) res.status(502).send('Falha ao baixar o arquivo da origem. Tente novamente.');
+    console.warn('[download proxy fallback]', err.message, 'Redirecionando direto para a URL original...');
+    if (!res.headersSent) {
+      return res.redirect(302, fileUrl);
+    }
   }
 });
 
