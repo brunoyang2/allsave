@@ -328,9 +328,9 @@
     </div>
   </main>
 
-  <!-- MODAL DE ANÚNCIO PREMIADO (REWARDED VIDEO AD) -->
-  <div id="rewardedAdModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden transition-opacity duration-300">
-    <div class="relative w-full max-w-lg glass-card rounded-3xl overflow-hidden shadow-2xl border border-slate-700/80 p-0 animate-in fade-in zoom-in-95 duration-200">
+  <!-- MODAL DE ANÚNCIO PREMIADO (REWARDED AD) -->
+  <div id="rewardedAdModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md hidden transition-opacity duration-300">
+    <div class="relative w-full max-w-2xl glass-card rounded-3xl overflow-hidden shadow-2xl border border-slate-700/80 p-0 animate-in fade-in zoom-in-95 duration-200">
       
       <!-- Cabeçalho do Modal com Etapas -->
       <div class="p-4 sm:p-5 border-b border-slate-800/80 bg-slate-900/90 flex items-center justify-between">
@@ -364,46 +364,184 @@
         <div id="adProgressBar" class="h-full bg-gradient-to-r from-cyan-500 via-emerald-400 to-cyan-400 w-0 transition-all duration-200"></div>
       </div>
 
-      <!-- Player de Vídeo e Anúncio Patrocinado Adsterra -->
-      <div class="relative aspect-video bg-black flex items-center justify-center overflow-hidden">
+      <!-- Área Visual dos Anúncios Patrocinados (2 Anúncios por Etapa) -->
+      <div class="relative min-h-[300px] bg-slate-950/90 flex flex-col justify-center overflow-hidden p-4 sm:p-6">
         
-        <video 
-          id="adVideoPlayer" 
-          class="w-full h-full object-cover" 
-          playsinline 
-          muted 
-          preload="auto"
-          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-        >
-        </video>
-
-        <!-- Selo de Patrocinador Oficial Adsterra -->
-        <div class="absolute top-3 left-3 z-10 pointer-events-none">
-          <span class="px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-md bg-black/70 text-amber-300 border border-amber-500/30 flex items-center gap-1 shadow-lg">
-            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
-            Anúncio Patrocinado
+        <!-- Selo de Patrocinador e Contador -->
+        <div class="flex items-center justify-between mb-3 w-full">
+          <span class="px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-md bg-black/80 text-amber-300 border border-amber-500/40 flex items-center gap-1.5 shadow-lg">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+            Anúncios Patrocinados
+          </span>
+          <span id="adCreativeBadge" class="px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-md bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 shadow-lg">
+            Etapa 1: 2 Anúncios Ativos
           </span>
         </div>
 
-        <!-- Overlay de Som / Desmutar -->
-        <button 
-          id="btnToggleMuteAd" 
-          onclick="toggleAdMute()"
-          type="button" 
-          class="absolute bottom-3 right-3 px-2.5 py-1.5 rounded-lg bg-black/70 hover:bg-black/90 text-white text-xs font-medium border border-white/10 flex items-center gap-1.5 backdrop-blur-md transition-all"
-        >
-          <svg id="iconVolumeMuted" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-          </svg>
-          <svg id="iconVolumeUnmuted" class="w-4 h-4 hidden text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-          </svg>
-          <span id="labelVolume">Ativar Som</span>
-        </button>
+        <!-- ETAPA 1: 2 ANÚNCIOS VISUAIS INTERATIVOS -->
+        <div id="step1Ads" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full">
+          <!-- Anúncio 1A: VPN Turbo -->
+          <a 
+            href="https://afders.org/1/1a38bdd16f58578a723320a902840a8c" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-indigo-950/90 via-slate-900/90 to-slate-950 border border-indigo-500/40 hover:border-cyan-400 shadow-xl hover:shadow-cyan-500/20 transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <div class="flex items-start justify-between mb-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                #1 • SEGURANÇA
+              </span>
+              <span class="text-[10px] font-bold text-amber-300 flex items-center gap-0.5">
+                ★ 4.9
+              </span>
+            </div>
+            <div class="flex items-center gap-3 my-2">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 text-white flex-shrink-0 flex items-center justify-center shadow-md shadow-cyan-500/30 group-hover:scale-105 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <h4 class="text-sm font-extrabold text-white group-hover:text-cyan-300 transition-colors leading-tight">
+                  Turbo VPN & Download Sem Limites
+                </h4>
+                <p class="text-[11px] text-slate-300 leading-snug mt-1">
+                  Navegue anônimo e acelere a taxa de transferência em alta velocidade.
+                </p>
+              </div>
+            </div>
+            <div class="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between">
+              <span class="text-[10px] text-slate-400 font-medium">Patrocinado • Grátis</span>
+              <span class="px-3 py-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 group-hover:from-cyan-400 group-hover:to-blue-500 text-slate-950 font-black text-xs flex items-center gap-1 shadow-sm">
+                Acessar
+                <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </div>
+          </a>
+
+          <!-- Anúncio 1B: Acelerador de Vídeos -->
+          <a 
+            href="https://afders.org/1/1a38bdd16f58578a723320a902840a8c" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-emerald-950/90 via-slate-900/90 to-slate-950 border border-emerald-500/40 hover:border-emerald-400 shadow-xl hover:shadow-emerald-500/20 transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <div class="flex items-start justify-between mb-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                #2 • DESEMPENHO
+              </span>
+              <span class="text-[10px] font-bold text-emerald-400 flex items-center gap-0.5">
+                ⚡ TURBO 200%
+              </span>
+            </div>
+            <div class="flex items-center gap-3 my-2">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex-shrink-0 flex items-center justify-center shadow-md shadow-emerald-500/30 group-hover:scale-105 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <h4 class="text-sm font-extrabold text-white group-hover:text-emerald-300 transition-colors leading-tight">
+                  Acelerador & Limpeza de Memória
+                </h4>
+                <p class="text-[11px] text-slate-300 leading-snug mt-1">
+                  Libere espaço interno e otimize a reprodução de mídia em 1 clique.
+                </p>
+              </div>
+            </div>
+            <div class="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between">
+              <span class="text-[10px] text-slate-400 font-medium">Patrocinado • Teste Grátis</span>
+              <span class="px-3 py-1 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 group-hover:from-emerald-400 group-hover:to-teal-400 text-slate-950 font-black text-xs flex items-center gap-1 shadow-sm">
+                Instalar
+                <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </div>
+          </a>
+        </div>
+
+        <!-- ETAPA 2: 2 ANÚNCIOS VISUAIS INTERATIVOS -->
+        <div id="step2Ads" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full hidden">
+          <!-- Anúncio 2A: Recompensas e Bônus -->
+          <a 
+            href="https://afders.org/1/1a38bdd16f58578a723320a902840a8c" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-amber-950/90 via-slate-900/90 to-slate-950 border border-amber-500/40 hover:border-amber-400 shadow-xl hover:shadow-amber-500/20 transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <div class="flex items-start justify-between mb-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                #1 • RECOMPENSAS
+              </span>
+              <span class="text-[10px] font-bold text-amber-400 flex items-center gap-0.5">
+                🎁 BÔNUS EXCLUSIVO
+              </span>
+            </div>
+            <div class="flex items-center gap-3 my-2">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 to-rose-600 text-white flex-shrink-0 flex items-center justify-center shadow-md shadow-amber-500/30 group-hover:scale-105 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <h4 class="text-sm font-extrabold text-white group-hover:text-amber-300 transition-colors leading-tight">
+                  Gire a Roleta & Resgate Prêmios
+                </h4>
+                <p class="text-[11px] text-slate-300 leading-snug mt-1">
+                  Vantagens especiais, cupons e bônus diários liberados hoje para você.
+                </p>
+              </div>
+            </div>
+            <div class="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between">
+              <span class="text-[10px] text-slate-400 font-medium">Patrocinado • Liberado</span>
+              <span class="px-3 py-1 rounded-lg bg-gradient-to-r from-amber-500 to-rose-500 group-hover:from-amber-400 group-hover:to-rose-400 text-slate-950 font-black text-xs flex items-center gap-1 shadow-sm">
+                Resgatar
+                <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </div>
+          </a>
+
+          <!-- Anúncio 2B: Armazenamento em Nuvem -->
+          <a 
+            href="https://afders.org/1/1a38bdd16f58578a723320a902840a8c" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-purple-950/90 via-slate-900/90 to-slate-950 border border-purple-500/40 hover:border-purple-400 shadow-xl hover:shadow-purple-500/20 transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <div class="flex items-start justify-between mb-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                #2 • NUVEM HD
+              </span>
+              <span class="text-[10px] font-bold text-purple-400 flex items-center gap-0.5">
+                ☁️ 100 GB GRÁTIS
+              </span>
+            </div>
+            <div class="flex items-center gap-3 my-2">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-purple-500 to-fuchsia-600 text-white flex-shrink-0 flex items-center justify-center shadow-md shadow-purple-500/30 group-hover:scale-105 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+              </div>
+              <div class="text-left">
+                <h4 class="text-sm font-extrabold text-white group-hover:text-purple-300 transition-colors leading-tight">
+                  Backup Seguro & Nuvem Ilimitada
+                </h4>
+                <p class="text-[11px] text-slate-300 leading-snug mt-1">
+                  Guarde todos os seus vídeos em 1080p sem encher a memória do celular.
+                </p>
+              </div>
+            </div>
+            <div class="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-between">
+              <span class="text-[10px] text-slate-400 font-medium">Patrocinado • Nuvem</span>
+              <span class="px-3 py-1 rounded-lg bg-gradient-to-r from-purple-500 to-fuchsia-500 group-hover:from-purple-400 group-hover:to-fuchsia-400 text-white font-black text-xs flex items-center gap-1 shadow-sm">
+                Ativar
+                <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </div>
+          </a>
+        </div>
 
         <!-- Overlay de Transição Intermediária de 1.5s -->
-        <div id="adTransitionOverlay" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center hidden z-20 animate-in fade-in duration-300">
+        <div id="adTransitionOverlay" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center hidden z-40 animate-in fade-in duration-300">
           <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 mb-3 shadow-lg shadow-emerald-500/30 animate-bounce">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
@@ -416,7 +554,7 @@
         </div>
 
         <!-- Overlay de Sucesso Final (Download Iminente) -->
-        <div id="adSuccessOverlay" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center hidden z-20 animate-in fade-in duration-300">
+        <div id="adSuccessOverlay" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center hidden z-40 animate-in fade-in duration-300">
           <div class="w-16 h-16 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/40 mb-3 shadow-lg shadow-cyan-500/30">
             <svg class="w-8 h-8 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -754,13 +892,11 @@
     const adStepTitle = document.getElementById('adStepTitle');
     const adTimerText = document.getElementById('adTimerText');
     const adProgressBar = document.getElementById('adProgressBar');
-    const adVideoPlayer = document.getElementById('adVideoPlayer');
+    const adCreativeBadge = document.getElementById('adCreativeBadge');
+    const step1Ads = document.getElementById('step1Ads');
+    const step2Ads = document.getElementById('step2Ads');
     const adTransitionOverlay = document.getElementById('adTransitionOverlay');
     const adSuccessOverlay = document.getElementById('adSuccessOverlay');
-    const btnToggleMuteAd = document.getElementById('btnToggleMuteAd');
-    const iconVolumeMuted = document.getElementById('iconVolumeMuted');
-    const iconVolumeUnmuted = document.getElementById('iconVolumeUnmuted');
-    const labelVolume = document.getElementById('labelVolume');
 
     // REGEX DE DETECÇÃO EM TEMPO REAL
     const REGEX_RULES = {
@@ -1054,24 +1190,6 @@
       if (state.ad.timerInterval) clearInterval(state.ad.timerInterval);
       rewardedAdModal.classList.add('hidden');
       document.body.style.overflow = '';
-      try {
-        adVideoPlayer.pause();
-        adVideoPlayer.currentTime = 0;
-      } catch (e) {}
-    }
-
-    function toggleAdMute() {
-      state.ad.isMuted = !state.ad.isMuted;
-      adVideoPlayer.muted = state.ad.isMuted;
-      if (state.ad.isMuted) {
-        iconVolumeMuted.classList.remove('hidden');
-        iconVolumeUnmuted.classList.add('hidden');
-        labelVolume.textContent = 'Ativar Som';
-      } else {
-        iconVolumeMuted.classList.add('hidden');
-        iconVolumeUnmuted.classList.remove('hidden');
-        labelVolume.textContent = 'Silenciar';
-      }
     }
 
     function executarEtapaAnuncio() {
@@ -1089,28 +1207,26 @@
         const isTikTok = state.currentSession?.plataforma === 'tiktok';
         if (step === 1) {
           adStepTitle.textContent = isTikTok ? "Etapa 1/2: Removendo marca d'água..." : "Etapa 1/2: Otimizando resolução Full HD 1080p...";
+          if (step1Ads) step1Ads.classList.remove('hidden');
+          if (step2Ads) step2Ads.classList.add('hidden');
+          if (adCreativeBadge) adCreativeBadge.textContent = "Etapa 1: 2 Anúncios Ativos";
         } else {
           adStepTitle.textContent = isTikTok ? "Etapa 2/2: Liberando qualidade máxima 1080p..." : "Etapa 2/2: Conectando aos servidores de alta velocidade...";
+          if (step1Ads) step1Ads.classList.add('hidden');
+          if (step2Ads) step2Ads.classList.remove('hidden');
+          if (adCreativeBadge) adCreativeBadge.textContent = "Etapa 2: 2 Anúncios Ativos";
         }
       } else {
         adStepTitle.textContent = "Etapa 1/1: Preparando download em alta fidelidade...";
+        if (step1Ads) step1Ads.classList.remove('hidden');
+        if (step2Ads) step2Ads.classList.add('hidden');
+        if (adCreativeBadge) adCreativeBadge.textContent = "2 Anúncios Ativos";
       }
 
-      // Reinicia player de vídeo e barra de progresso
+      // Reinicia temporizador e barra de progresso
       state.ad.timeLeft = state.ad.durationPerStep;
       adTimerText.textContent = `Aguarde ${state.ad.timeLeft}s`;
       adProgressBar.style.width = '0%';
-
-      // Inicia player de vídeo com tratamento caso o navegador bloqueie autoplay com som
-      adVideoPlayer.currentTime = 0;
-      adVideoPlayer.muted = state.ad.isMuted;
-      
-      const playPromise = adVideoPlayer.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Autoplay foi bloqueado ou falhou na rede: temporizador continua de forma confiável
-        });
-      }
 
       // Temporizador regressivo
       const startTime = Date.now();
@@ -1131,34 +1247,26 @@
       }, 100);
     }
 
-    // Se o vídeo terminar antes do tempo estimado, conclui
-    adVideoPlayer.onended = () => {
-      if (state.ad.timerInterval) clearInterval(state.ad.timerInterval);
-      concluirEtapaAtual();
-    };
-
     function concluirEtapaAtual() {
       if (state.ad.totalSteps === 2 && state.ad.currentStep === 1) {
         const isTikTok = state.currentSession?.plataforma === 'tiktok';
         const titleEl = document.getElementById('adTransitionTitle');
         const subEl = document.getElementById('adTransitionSub');
         if (titleEl) titleEl.textContent = isTikTok ? "Marca d'água removida!" : "Qualidade Full HD liberada! 🎉";
-        if (subEl) subEl.textContent = isTikTok ? "Preparando a qualidade máxima 1080p na etapa final..." : "Conectando servidores de alta velocidade na etapa final...";
+        if (subEl) subEl.textContent = isTikTok ? "Preparando a etapa 2 com alta velocidade..." : "Conectando servidores de alta velocidade na etapa final...";
 
-        // Exibe overlay de transição de 1.5s
+        // Exibe overlay de transição de 1.2s
         adTransitionOverlay.classList.remove('hidden');
-        try { adVideoPlayer.pause(); } catch (e) {}
 
         setTimeout(() => {
           state.ad.currentStep = 2;
           executarEtapaAnuncio();
-        }, 1500);
+        }, 1200);
 
       } else {
         // Último anúncio concluído!
         adSuccessOverlay.classList.remove('hidden');
         adProgressBar.style.width = '100%';
-        try { adVideoPlayer.pause(); } catch (e) {}
 
         setTimeout(() => {
           const downloadUrl = `/api/download/${state.currentSession.token}/${state.ad.targetFormat}`;
@@ -1171,10 +1279,6 @@
     // CANCELA E BLOQUEIA O DOWNLOAD CASO O USUÁRIO PULE O ANÚNCIO
     function cancelarAnuncio() {
       if (state.ad.timerInterval) clearInterval(state.ad.timerInterval);
-      try {
-        adVideoPlayer.pause();
-        adVideoPlayer.currentTime = 0;
-      } catch (e) {}
 
       // Reseta o estado do anúncio sem disparar nenhum download!
       state.ad.currentStep = 1;
@@ -1184,7 +1288,7 @@
       // Notifica o usuário de forma enfática sobre a obrigatoriedade
       mostrarAlerta(
         'Download Cancelado!',
-        'Você pulou o anúncio. É <strong>obrigatório assistir ao anúncio completo</strong> para liberar o download em alta definição gratuitamente.',
+        'Você pulou o anúncio. É <strong>obrigatório assistir aos anúncios completos</strong> para liberar o download em alta definição gratuitamente.',
         'erro'
       );
     }
