@@ -150,6 +150,36 @@ async function extractInstagram(url) {
   return null;
 }
 
+// Função para priorizar sempre a maior qualidade disponível (1080p / 1920 / HD)
+function scoreResolution(m) {
+  if (!m || m.type !== 'video' || !m.url) return -1;
+  const q = String(m.quality || '').toUpperCase();
+  const r = String(m.resolution || '').toUpperCase();
+  const w = parseInt(m.width || '0', 10);
+  const h = parseInt(m.height || '0', 10);
+
+  // 1. Se tiver dimensões explícitas (ex: 1080x1920 ou 1920x1080)
+  const maxDim = Math.max(w, h);
+  if (maxDim > 0) return maxDim;
+
+  // 2. Extrai números de resolução (ex: 1080, 1920, 720)
+  const numbers = (q + ' ' + r).match(/\d{3,4}/g);
+  if (numbers) {
+    const nums = numbers.map((n) => parseInt(n, 10));
+    return Math.max(...nums);
+  }
+
+  // 3. Pesos para rótulos de qualidade
+  if (q.includes('4K') || q.includes('2160')) return 2160;
+  if (q.includes('2K') || q.includes('1440')) return 1440;
+  if (q.includes('1080') || q.includes('FHD') || q.includes('FULL HD') || q.includes('HD_NO_WATERMARK')) return 1080;
+  if (q === 'HD' || q.includes('HD')) return 1080;
+  if (q.includes('720')) return 720;
+  if (q === 'SD' || q.includes('SD')) return 480;
+
+  return 0;
+}
+
 // Extração Instagram / Facebook (RapidAPI prioritária, com fallback inteligente)
 async function extractMeta(url, plataforma) {
   // 1. Tenta API especializada se for Instagram
@@ -176,12 +206,13 @@ async function extractMeta(url, plataforma) {
       if (data && !data.error && Array.isArray(data.medias)) {
         const videos = data.medias.filter((m) => m.type === 'video' && m.url);
         if (videos.length) {
-          const pickRes = (m) => parseInt(String(m.quality || m.resolution || '').match(/\d{3,4}/)?.[0] || '0', 10);
-          videos.sort((a, b) => pickRes(b) - pickRes(a));
+          // Ordena rigorosamente da maior para a menor resolução para garantir 1080p
+          videos.sort((a, b) => scoreResolution(b) - scoreResolution(a));
+          const bestVideo = videos[0];
           return {
             titulo: data.title || `Vídeo do ${plataforma === 'instagram' ? 'Instagram' : 'Facebook'}`,
-            thumbnail: data.thumbnail || (videos[0].thumbnail || ''),
-            links: { video_hd: videos[0].url },
+            thumbnail: data.thumbnail || (bestVideo.thumbnail || ''),
+            links: { video_hd: bestVideo.url },
             headers: {},
           };
         }
