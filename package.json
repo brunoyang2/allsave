@@ -1,0 +1,17 @@
+{
+  "name": "allsave",
+  "version": "1.0.0",
+  "description": "AllSave - Downloader de vídeos TikTok, Instagram e Facebook",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "update-ytdlp": "node -e \"const fs=require('fs'),axios=require('axios');axios({method:'get',url:'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe',responseType:'stream'}).then(r=>r.data.pipe(fs.createWriteStream('bin/yt-dlp.exe')))\""
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  }
+}

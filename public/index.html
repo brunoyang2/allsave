@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AllSave - Baixar Vídeos do TikTok, Instagram e Facebook Sem Marca d'Água</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Baixe vídeos do TikTok sem marca d'água em Full HD 1080p, Reels do Instagram, Stories e vídeos do Facebook gratuitamente em alta qualidade com o AllSave.">
+  <meta name="keywords" content="baixar video tiktok sem marca d'agua, download tiktok hd, baixar reels instagram, baixar video facebook, allsave, tiktok downloader, mp3 tiktok">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="http://localhost:3000/">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AllSave - Downloader de Vídeos em Alta Resolução">
+  <meta property="og:description" content="Baixe vídeos do TikTok sem marca d'água, Reels do Instagram e Facebook em 1080p grátis.">
+  <meta property="og:site_name" content="AllSave">
+
+  <!-- Favicon SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2306b6d4'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z'/></svg>">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfeff',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+            },
+            tiktok: '#ff0050',
+            instagram: '#e1306c',
+            facebook: '#1877f2',
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'glow': 'glow 2s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            glow: {
+              '0%': { boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)' },
+              '100%': { boxShadow: '0 0 30px rgba(16, 185, 129, 0.6)' },
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Structured Data JSON-LD (SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "AllSave",
+    "url": "http://localhost:3000",
+    "description": "Ferramenta online gratuita para baixar vídeos do TikTok sem marca d'água, Instagram Reels e Facebook em HD.",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    }
+  }
+  </script>
+
+  <style>
+    /* Estilos customizados e animações suaves */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-input {
+      background: rgba(2, 6, 23, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 35px -5px rgba(6, 182, 212, 0.25);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-cyan-500 selection:text-black antialiased relative overflow-x-hidden">
+
+  <!-- Efeitos de iluminação de fundo (Ambient Glows) -->
+  <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-cyan-600/20 via-emerald-600/15 to-purple-600/20 blur-[130px] rounded-full pointer-events-none -z-10"></div>
+  <div class="absolute top-[800px] right-0 w-[450px] h-[450px] bg-blue-600/10 blur-[140px] rounded-full pointer-events-none -z-10"></div>
+
+  <!-- Header / Navbar -->
+  <header class="w-full border-b border-slate-800/60 bg-slate-950/70 backdrop-blur-xl sticky top-0 z-40 transition-all">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 20h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+            AllSave<span class="text-cyan-400">.io</span>
+          </span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-4 text-xs font-semibold">
+        <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          Servidores 100% Online
+        </span>
+        <a href="#como-funciona" class="text-slate-400 hover:text-white transition-colors px-2 py-1">Como Baixar</a>
+        <a href="#faq" class="text-slate-400 hover:text-white transition-colors px-2 py-1">FAQ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL (ACIMA DA DOBRA) -->
+  <main class="flex-grow">
+    <div class="max-w-4xl mx-auto px-4 pt-10 sm:pt-16 pb-12">
+      
+      <!-- Headline & Subtitle -->
+      <div class="text-center space-y-4 mb-8">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/60 text-xs font-medium text-slate-300 shadow-sm">
+          <span class="flex h-2 w-2 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+          </span>
+          Download em Alta Definição 1080p & Sem Logotipo
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
+          Baixar Vídeos do <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">TikTok</span>,
+          <span class="bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 bg-clip-text text-transparent">Instagram</span> & 
+          <span class="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">Facebook</span>
+        </h1>
+        
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto font-normal">
+          Cole o link abaixo para remover marcas d'água, baixar Reels, Stories e extrair áudio em MP3 com velocidade máxima e sem instalar nada.
+        </p>
+      </div>
+
+      <!-- BARRA DE INPUT PRINCIPAL (ACIMA DA DOBRA) -->
+      <div class="relative glass-card p-2 sm:p-3 rounded-2xl sm:rounded-3xl shadow-2xl glow-cyan mb-3 transition-all duration-300 border border-slate-700/60 focus-within:border-cyan-500/70 focus-within:ring-2 focus-within:ring-cyan-500/20">
+        <form id="downloadForm" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2" onsubmit="event.preventDefault(); extrairVideo();">
+          
+          <!-- Wrapper do Campo e Botão Colar Embutido -->
+          <div class="relative flex-grow flex items-center">
+            <div class="absolute left-3.5 text-slate-500 pointer-events-none">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+              </svg>
+            </div>
+
+            <input 
+              type="url" 
+              id="urlInput"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Cole o link do TikTok, Instagram Reels ou Facebook aqui..." 
+              class="w-full bg-slate-900/80 text-white placeholder-slate-500 text-sm sm:text-base pl-11 pr-24 py-3.5 rounded-xl sm:rounded-2xl border border-transparent focus:outline-none focus:bg-slate-900 transition-colors"
+              required
+            >
+
+            <!-- Botão Colar Embutido (Clipboard API) -->
+            <button 
+              type="button" 
+              id="btnColar"
+              title="Colar link da área de transferência"
+              class="absolute right-2.5 px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 border border-slate-700/80 transition-all active:scale-95"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+              </svg>
+              <span>Colar</span>
+            </button>
+          </div>
+
+          <!-- Botão Principal "Baixar" -->
+          <button 
+            type="submit" 
+            id="btnBaixar"
+            class="sm:w-auto px-7 py-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold text-base flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none group"
+          >
+            <span id="btnBaixarTexto">Baixar</span>
+            <svg id="btnBaixarIcon" class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+            <svg id="btnBaixarSpinner" class="w-5 h-5 animate-spin hidden text-slate-950" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- AUTO-DETECÇÃO EM TEMPO REAL (SELO / BADGE REGEX) -->
+      <div class="flex items-center justify-between px-2 min-h-[28px] mb-8">
+        <div id="detectionContainer" class="flex items-center gap-2 transition-all duration-300 opacity-0 -translate-y-1">
+          <span class="text-xs text-slate-400 font-medium">Plataforma identificada:</span>
+          <span id="platformBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all shadow-sm">
+            <!-- Injetado dinamicamente via JS -->
+          </span>
+        </div>
+        <div id="quickClear" class="hidden">
+          <button type="button" onclick="limparInput()" class="text-xs text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1">
+            Limpar
+          </button>
+        </div>
+      </div>
+
+      <!-- MENSAGEM DE ALERTA / ERRO -->
+      <div id="alertBox" class="hidden mb-6 p-4 rounded-2xl border transition-all animate-in fade-in">
+        <div class="flex items-start gap-3">
+          <div id="alertIcon" class="flex-shrink-0 mt-0.5"></div>
+          <div class="flex-grow">
+            <h4 id="alertTitle" class="text-sm font-bold"></h4>
+            <p id="alertMessage" class="text-xs mt-0.5 opacity-90"></p>
+          </div>
+          <button onclick="fecharAlerta()" class="text-slate-400 hover:text-white text-sm">&times;</button>
+        </div>
+      </div>
+
+      <!-- ÁREA DE PRÉVIA (9:16 VERTICAL) -->
+      <div id="previewCard" class="hidden glass-card rounded-3xl p-5 sm:p-7 border border-slate-800 shadow-2xl transition-all duration-500">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-center">
+          
+          <!-- Miniatura Vertical 9:16 -->
+          <div class="md:col-span-5 flex justify-center">
+            <div class="relative w-full max-w-[240px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl border border-slate-700/80 bg-slate-900 group">
+              <img 
+                id="previewThumb" 
+                src="" 
+                alt="Miniatura do Vídeo" 
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                onerror="this.src='https://placehold.co/720x1280/0f172a/38bdf8?text=AllSave+Video'; this.onerror=null;"
+              >
+              <!-- Gradiente de sombra sobre a thumb -->
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-black/30 pointer-events-none"></div>
+              
+              <!-- Selo sobre a imagem -->
+              <div class="absolute top-3 left-3">
+                <span id="previewThumbBadge" class="px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider backdrop-blur-md bg-black/60 text-white border border-white/10 flex items-center gap-1">
+                  HD Original
+                </span>
+              </div>
+
+              <!-- Ícone de Play centralizado -->
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-12 h-12 rounded-full bg-cyan-500/90 text-slate-950 flex items-center justify-center shadow-lg shadow-cyan-500/40 backdrop-blur-sm group-hover:scale-110 transition-transform">
+                  <svg class="w-6 h-6 ml-0.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Duração ou tipo de mídia na base -->
+              <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] text-slate-300 font-medium">
+                <span class="flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  Link Validado
+                </span>
+                <span class="px-1.5 py-0.5 rounded bg-black/70 text-slate-200 font-mono text-[10px]">9:16</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Informações e Botões Dinâmicos de Download -->
+          <div class="md:col-span-7 flex flex-col justify-center space-y-5">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <span id="videoPlatformTag" class="text-xs font-bold uppercase tracking-wider text-cyan-400">
+                  TikTok
+                </span>
+                <span class="text-slate-600">•</span>
+                <span class="text-xs text-slate-400">Pronto para Download</span>
+              </div>
+              <h3 id="previewTitle" class="text-lg sm:text-xl font-bold text-white line-clamp-2 leading-snug">
+                Título do Vídeo Extraído
+              </h3>
+            </div>
+
+            <div class="border-t border-slate-800/80 pt-4 space-y-3">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Escolha o formato desejado:
+              </p>
+
+              <!-- Container dos Botões Injetados Dinamicamente de acordo com a plataforma -->
+              <div id="downloadButtonsContainer" class="space-y-2.5">
+                <!-- Preenchido dinamicamente com TikTok (Efeito Chamariz) ou Instagram/Facebook -->
+              </div>
+            </div>
+
+            <div class="text-[11px] text-slate-500 flex items-center gap-1.5 pt-1">
+              <svg class="w-3.5 h-3.5 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>Download direto sem redirecionamento para sites externos.</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL DE ANÚNCIO PREMIADO (REWARDED VIDEO AD) -->
+  <div id="rewardedAdModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden transition-opacity duration-300">
+    <div class="relative w-full max-w-lg glass-card rounded-3xl overflow-hidden shadow-2xl border border-slate-700/80 p-0 animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Cabeçalho do Modal com Etapas -->
+      <div class="p-4 sm:p-5 border-b border-slate-800/80 bg-slate-900/90 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+          </div>
+          <div>
+            <span id="adStepBadge" class="text-xs font-bold text-cyan-400 tracking-wide uppercase">
+              Etapa 1/2
+            </span>
+            <h4 id="adStepTitle" class="text-sm font-semibold text-white">
+              Removendo marca d'água...
+            </h4>
+          </div>
+        </div>
+
+        <div class="text-right">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Anúncio Premiado</span>
+          <span id="adTimerText" class="text-xs font-mono font-bold text-amber-400">
+            Aguarde 6s
+          </span>
+        </div>
+      </div>
+
+      <!-- Barra de Progresso do Anúncio -->
+      <div class="w-full bg-slate-800 h-1.5 overflow-hidden">
+        <div id="adProgressBar" class="h-full bg-gradient-to-r from-cyan-500 via-emerald-400 to-cyan-400 w-0 transition-all duration-200"></div>
+      </div>
+
+      <!-- Player de Vídeo HTML5 (Preparado para VAST Tag / Sample MP4) -->
+      <div class="relative aspect-video bg-black flex items-center justify-center overflow-hidden">
+        
+        <video 
+          id="adVideoPlayer" 
+          class="w-full h-full object-cover" 
+          playsinline 
+          muted 
+          preload="auto"
+          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+        >
+        </video>
+
+        <!-- Overlay de Som / Desmutar -->
+        <button 
+          id="btnToggleMuteAd" 
+          onclick="toggleAdMute()"
+          type="button" 
+          class="absolute bottom-3 right-3 px-2.5 py-1.5 rounded-lg bg-black/70 hover:bg-black/90 text-white text-xs font-medium border border-white/10 flex items-center gap-1.5 backdrop-blur-md transition-all"
+        >
+          <svg id="iconVolumeMuted" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+          <svg id="iconVolumeUnmuted" class="w-4 h-4 hidden text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+          <span id="labelVolume">Ativar Som</span>
+        </button>
+
+        <!-- Overlay de Transição Intermediária de 1.5s -->
+        <div id="adTransitionOverlay" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center hidden z-20 animate-in fade-in duration-300">
+          <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 mb-3 shadow-lg shadow-emerald-500/30 animate-bounce">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <h4 class="text-lg font-extrabold text-white mb-1">Marca d'água removida!</h4>
+          <p class="text-xs text-slate-300 max-w-xs">
+            Preparando a qualidade máxima 1080p na etapa final...
+          </p>
+        </div>
+
+        <!-- Overlay de Sucesso Final (Download Iminente) -->
+        <div id="adSuccessOverlay" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center hidden z-20 animate-in fade-in duration-300">
+          <div class="w-16 h-16 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/40 mb-3 shadow-lg shadow-cyan-500/30">
+            <svg class="w-8 h-8 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+          </div>
+          <h4 class="text-lg font-extrabold text-white mb-1">Download Liberado! 🎉</h4>
+          <p class="text-xs text-cyan-300">
+            Iniciando transferência direta do seu arquivo...
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Rodapé do Modal com Informações e Disclaimer VAST -->
+      <div class="p-4 bg-slate-900/70 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+        <div class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+          <span>O anúncio financia nossos servidores gratuitos de alta velocidade.</span>
+        </div>
+        <button 
+          id="btnForceCompleteAd" 
+          onclick="pularAnuncioDebug()"
+          title="Modo teste / pular para download"
+          class="text-[11px] text-slate-500 hover:text-slate-300 underline underline-offset-2 ml-2"
+        >
+          Pular
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SEÇÕES SEO ABAIXO DA DOBRA -->
+  <section id="como-funciona" class="border-t border-slate-850 bg-slate-950/60 py-16 relative">
+    <div class="max-w-6xl mx-auto px-4">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          Como baixar vídeos sem marca d'água em 3 passos
+        </h2>
+        <p class="text-slate-400 text-sm mt-2">
+          Processo 100% online, rápido e compatível com celulares Android, iPhone (iOS), computadores Windows e Mac.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <!-- Passo 1 -->
+        <div class="glass-card p-6 sm:p-7 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all hover:-translate-y-1 group">
+          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-extrabold text-lg mb-4 border border-cyan-500/20 group-hover:scale-110 transition-transform">
+            1
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Copie o link do vídeo</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Abra o TikTok, Instagram ou Facebook, clique no botão de <strong>Compartilhar</strong> e selecione a opção <strong>Copiar Link</strong>.
+          </p>
+        </div>
+
+        <!-- Passo 2 -->
+        <div class="glass-card p-6 sm:p-7 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all hover:-translate-y-1 group">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-extrabold text-lg mb-4 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+            2
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Cole no AllSave</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Cole a URL na caixa de pesquisa acima e clique em <strong>Baixar</strong>. Nosso sistema identifica a rede social e extrai a melhor qualidade disponível.
+          </p>
+        </div>
+
+        <!-- Passo 3 -->
+        <div class="glass-card p-6 sm:p-7 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all hover:-translate-y-1 group">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-extrabold text-lg mb-4 border border-purple-500/20 group-hover:scale-110 transition-transform">
+            3
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Escolha HD ou MP3</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Selecione <strong>Sem Marca d'Água HD</strong>, qualidade normal ou extraia apenas a faixa de música original em formato MP3 direto no seu dispositivo.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PLATAFORMAS SUPORTADAS -->
+  <section class="py-14 border-t border-slate-850 bg-slate-900/30">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-8">
+        Compatibilidade Total com as Principais Redes
+      </h3>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center font-black">
+            TT
+          </div>
+          <div class="text-left">
+            <h4 class="text-sm font-bold text-white">TikTok Vídeos</h4>
+            <span class="text-[11px] text-slate-400">Sem logotipo</span>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-black">
+            IG
+          </div>
+          <div class="text-left">
+            <h4 class="text-sm font-bold text-white">Instagram Reels</h4>
+            <span class="text-[11px] text-slate-400">Vídeos verticais</span>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-black">
+            ST
+          </div>
+          <div class="text-left">
+            <h4 class="text-sm font-bold text-white">Instagram Stories</h4>
+            <span class="text-[11px] text-slate-400">Públicos em HD</span>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-black">
+            FB
+          </div>
+          <div class="text-left">
+            <h4 class="text-sm font-bold text-white">Facebook Watch</h4>
+            <span class="text-[11px] text-slate-400">Reels & Vídeos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ ACORDEÃO (SEO) -->
+  <section id="faq" class="py-16 border-t border-slate-850 bg-slate-950/80">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          Perguntas Frequentes (FAQ)
+        </h2>
+        <p class="text-slate-400 text-sm mt-2">
+          Tire suas dúvidas sobre o funcionamento do downloader AllSave.
+        </p>
+      </div>
+
+      <div class="space-y-3.5">
+        
+        <!-- FAQ 1 -->
+        <details class="group glass-card rounded-2xl border border-slate-800 overflow-hidden transition-all [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between p-5 cursor-pointer select-none">
+            <h3 class="text-sm sm:text-base font-bold text-white group-open:text-cyan-400 transition-colors">
+              O AllSave é realmente gratuito?
+            </h3>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-300 border-t border-slate-800/60 pt-3 leading-relaxed">
+            Sim! O serviço é 100% gratuito e não exige instalação de nenhum aplicativo ou cadastro. Para mantermos os servidores em nuvem de alta capacidade ativos, exibimos breves anúncios premiados antes de iniciar o download.
+          </div>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="group glass-card rounded-2xl border border-slate-800 overflow-hidden transition-all [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between p-5 cursor-pointer select-none">
+            <h3 class="text-sm sm:text-base font-bold text-white group-open:text-cyan-400 transition-colors">
+              Como remover a marca d'água do TikTok?
+            </h3>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-300 border-t border-slate-800/60 pt-3 leading-relaxed">
+            Basta colar a URL do TikTok no campo de busca do AllSave. Nosso motor localiza o fluxo de vídeo limpo original nos servidores da rede social e entrega o arquivo sem nenhuma marca d'água, logo ou marca flutuante.
+          </div>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="group glass-card rounded-2xl border border-slate-800 overflow-hidden transition-all [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between p-5 cursor-pointer select-none">
+            <h3 class="text-sm sm:text-base font-bold text-white group-open:text-cyan-400 transition-colors">
+              Onde os vídeos baixados ficam salvos?
+            </h3>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-300 border-t border-slate-800/60 pt-3 leading-relaxed">
+            Em computadores (Windows e Mac), os arquivos vão diretamente para a sua pasta padrão de "Downloads". No Android e iPhone (iOS), o arquivo é salvo no aplicativo "Arquivos" ou na galeria de fotos.
+          </div>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="group glass-card rounded-2xl border border-slate-800 overflow-hidden transition-all [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between p-5 cursor-pointer select-none">
+            <h3 class="text-sm sm:text-base font-bold text-white group-open:text-cyan-400 transition-colors">
+              É possível extrair apenas o áudio (MP3)?
+            </h3>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-300 border-t border-slate-800/60 pt-3 leading-relaxed">
+            Sim! Para vídeos do TikTok, você encontra o botão "Apenas Áudio Original (MP3)". Ao selecioná-lo, o arquivo de áudio puro é baixado em formato `.mp3` para você ouvir onde quiser.
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-850 py-10 bg-slate-950 text-slate-400 text-xs">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-extrabold text-white text-sm">AllSave</span>
+        <span>• &copy; 2026 Todos os direitos reservados.</span>
+      </div>
+      <div class="text-center sm:text-right text-slate-500">
+        Não somos afiliados nem hospedamos mídias do TikTok, ByteDance, Instagram ou Meta.
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT FRONT-END (VANILLA JAVASCRIPT) -->
+  <script>
+    // ESTADO DA APLICAÇÃO
+    const state = {
+      currentSession: null, // { token, plataforma, titulo, thumbnail }
+      ad: {
+        totalSteps: 1,
+        currentStep: 1,
+        targetFormat: null,
+        timerInterval: null,
+        timeLeft: 6,
+        isMuted: true,
+        durationPerStep: 6, // segundos por anúncio de demonstração
+      }
+    };
+
+    // ELEMENTOS DO DOM
+    const urlInput = document.getElementById('urlInput');
+    const btnColar = document.getElementById('btnColar');
+    const btnBaixar = document.getElementById('btnBaixar');
+    const btnBaixarTexto = document.getElementById('btnBaixarTexto');
+    const btnBaixarIcon = document.getElementById('btnBaixarIcon');
+    const btnBaixarSpinner = document.getElementById('btnBaixarSpinner');
+    
+    const detectionContainer = document.getElementById('detectionContainer');
+    const platformBadge = document.getElementById('platformBadge');
+    const quickClear = document.getElementById('quickClear');
+
+    const alertBox = document.getElementById('alertBox');
+    const alertTitle = document.getElementById('alertTitle');
+    const alertMessage = document.getElementById('alertMessage');
+    const alertIcon = document.getElementById('alertIcon');
+
+    const previewCard = document.getElementById('previewCard');
+    const previewThumb = document.getElementById('previewThumb');
+    const previewTitle = document.getElementById('previewTitle');
+    const videoPlatformTag = document.getElementById('videoPlatformTag');
+    const downloadButtonsContainer = document.getElementById('downloadButtonsContainer');
+
+    // Elementos do Modal de Anúncio
+    const rewardedAdModal = document.getElementById('rewardedAdModal');
+    const adStepBadge = document.getElementById('adStepBadge');
+    const adStepTitle = document.getElementById('adStepTitle');
+    const adTimerText = document.getElementById('adTimerText');
+    const adProgressBar = document.getElementById('adProgressBar');
+    const adVideoPlayer = document.getElementById('adVideoPlayer');
+    const adTransitionOverlay = document.getElementById('adTransitionOverlay');
+    const adSuccessOverlay = document.getElementById('adSuccessOverlay');
+    const btnToggleMuteAd = document.getElementById('btnToggleMuteAd');
+    const iconVolumeMuted = document.getElementById('iconVolumeMuted');
+    const iconVolumeUnmuted = document.getElementById('iconVolumeUnmuted');
+    const labelVolume = document.getElementById('labelVolume');
+
+    // REGEX DE DETECÇÃO EM TEMPO REAL
+    const REGEX_RULES = {
+      tiktok: {
+        pattern: /^(https?:\/\/)?([\w-]+\.)?(tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com)\/.+/i,
+        name: 'TikTok',
+        badgeClass: 'bg-[#ff0050]/20 text-[#ff3b75] border border-[#ff0050]/40',
+        icon: `<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.86 4.46V12a8.16 8.16 0 0 0 5.73 2.27V10.8a4.82 4.82 0 0 1-3.77-4.11z"/></svg>`
+      },
+      instagram: {
+        pattern: /^(https?:\/\/)?(www\.)?(instagram\.com|instagr\.am)\/(reel|reels|p|stories|tv)\/.+/i,
+        name: 'Instagram',
+        badgeClass: 'bg-gradient-to-r from-pink-500/20 via-rose-500/20 to-amber-500/20 text-pink-400 border border-pink-500/40',
+        icon: `<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`
+      },
+      facebook: {
+        pattern: /^(https?:\/\/)?([\w-]+\.)?(facebook\.com|fb\.watch|fb\.com)\/.+/i,
+        name: 'Facebook',
+        badgeClass: 'bg-[#1877f2]/20 text-[#4599ff] border border-[#1877f2]/40',
+        icon: `<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`
+      }
+    };
+
+    // Detectar em tempo real
+    function detectarPlataforma(url) {
+      const cleanUrl = url.trim();
+      if (!cleanUrl) return null;
+      for (const [key, item] of Object.entries(REGEX_RULES)) {
+        if (item.pattern.test(cleanUrl)) {
+          return { key, ...item };
+        }
+      }
+      return null;
+    }
+
+    function atualizarBadge() {
+      const detected = detectarPlataforma(urlInput.value);
+      if (detected) {
+        platformBadge.className = `inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all shadow-sm ${detected.badgeClass}`;
+        platformBadge.innerHTML = `${detected.icon} <span>${detected.name}</span>`;
+        detectionContainer.classList.remove('opacity-0', '-translate-y-1');
+        detectionContainer.classList.add('opacity-100', 'translate-y-0');
+        quickClear.classList.remove('hidden');
+      } else {
+        if (urlInput.value.trim().length > 0) {
+          platformBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-400 border border-slate-700';
+          platformBadge.innerHTML = `<span>Aguardando link válido...</span>`;
+          detectionContainer.classList.remove('opacity-0', '-translate-y-1');
+          detectionContainer.classList.add('opacity-100', 'translate-y-0');
+          quickClear.classList.remove('hidden');
+        } else {
+          detectionContainer.classList.remove('opacity-100', 'translate-y-0');
+          detectionContainer.classList.add('opacity-0', '-translate-y-1');
+          quickClear.classList.add('hidden');
+        }
+      }
+    }
+
+    urlInput.addEventListener('input', atualizarBadge);
+    urlInput.addEventListener('paste', () => setTimeout(atualizarBadge, 20));
+
+    function limparInput() {
+      urlInput.value = '';
+      atualizarBadge();
+      urlInput.focus();
+    }
+
+    // BOTÃO COLAR (CLIPBOARD API)
+    btnColar.addEventListener('click', async () => {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            urlInput.value = text.trim();
+            atualizarBadge();
+            mostrarAlerta('Link colado!', 'O link foi inserido com sucesso.', 'info');
+            return;
+          }
+        }
+        mostrarAlerta('Permissão necessária', 'Pressione Ctrl+V para colar o link no campo.', 'info');
+      } catch (err) {
+        mostrarAlerta('Área de Transferência', 'Use o atalho de teclado Ctrl+V para colar o link.', 'info');
+      }
+    });
+
+    // SISTEMA DE ALERTAS
+    function mostrarAlerta(titulo, msg, tipo = 'erro') {
+      alertBox.classList.remove('hidden', 'bg-red-500/10', 'border-red-500/30', 'text-red-400', 'bg-cyan-500/10', 'border-cyan-500/30', 'text-cyan-400');
+      if (tipo === 'erro') {
+        alertBox.classList.add('bg-red-500/10', 'border-red-500/30', 'text-red-400');
+        alertIcon.innerHTML = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>`;
+      } else {
+        alertBox.classList.add('bg-cyan-500/10', 'border-cyan-500/30', 'text-cyan-400');
+        alertIcon.innerHTML = `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>`;
+      }
+      alertTitle.textContent = titulo;
+      alertMessage.textContent = msg;
+    }
+
+    function fecharAlerta() {
+      alertBox.classList.add('hidden');
+    }
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        btnBaixar.disabled = true;
+        btnBaixarTexto.textContent = 'Processando...';
+        btnBaixarIcon.classList.add('hidden');
+        btnBaixarSpinner.classList.remove('hidden');
+      } else {
+        btnBaixar.disabled = false;
+        btnBaixarTexto.textContent = 'Baixar';
+        btnBaixarIcon.classList.remove('hidden');
+        btnBaixarSpinner.classList.add('hidden');
+      }
+    }
+
+    // EXTRAÇÃO DE VÍDEO (REQUISIÇÃO /api/extract)
+    async function extrairVideo() {
+      fecharAlerta();
+      const url = urlInput.value.trim();
+      if (!url) {
+        mostrarAlerta('URL necessária', 'Por favor, insira o link de um vídeo para continuar.');
+        return;
+      }
+
+      setLoading(true);
+      previewCard.classList.add('hidden');
+
+      try {
+        const resp = await fetch('/api/extract', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok || !data.sucesso) {
+          throw new Error(data.erro || 'Falha ao analisar o vídeo. Verifique se o link é público.');
+        }
+
+        // Armazena sessão e renderiza prévia
+        state.currentSession = data;
+        renderizarPrevia(data);
+
+      } catch (err) {
+        mostrarAlerta('Não foi possível obter o vídeo', err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // RENDERIZAR ÁREA DE PRÉVIA
+    function renderizarPrevia(data) {
+      previewTitle.textContent = data.titulo || 'Vídeo Extraído com Sucesso';
+      videoPlatformTag.textContent = data.plataforma.toUpperCase();
+      
+      // Thumbnail com fallback
+      const thumbUrl = data.thumbnail ? `/api/thumb?u=${encodeURIComponent(data.thumbnail)}` : 'https://placehold.co/720x1280/0f172a/38bdf8?text=AllSave+HD';
+      previewThumb.src = thumbUrl;
+
+      // Renderiza botões de download de acordo com as regras da plataforma
+      downloadButtonsContainer.innerHTML = '';
+
+      if (data.plataforma === 'tiktok') {
+        // TIKTOK (EFEITO CHAMARIZ)
+        // 1. Botão Destaque (Verde/Ciano) -> 2 anúncios
+        const btnDestaque = document.createElement('button');
+        btnDestaque.type = 'button';
+        btnDestaque.className = 'w-full p-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-extrabold flex items-center justify-between shadow-xl glow-emerald hover:shadow-emerald-500/50 transition-all duration-200 active:scale-[0.99] group text-left';
+        btnDestaque.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-slate-950/20 flex items-center justify-center text-slate-950">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 20h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm sm:text-base font-extrabold">Baixar Sem Marca d'Água</span>
+                <span class="px-2 py-0.5 rounded-full bg-slate-950/30 text-slate-950 text-[10px] font-black uppercase tracking-wider">HD Máximo 1080p</span>
+              </div>
+              <p class="text-xs font-semibold text-slate-900/90 mt-0.5">Qualidade máxima limpa • Recomendado</p>
+            </div>
+          </div>
+          <div class="text-right flex items-center gap-2">
+            <span class="hidden sm:inline-block text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black/20 text-slate-950">2 Anúncios</span>
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        `;
+        btnDestaque.onclick = () => iniciarFluxoDownload('no_watermark_hd', 2);
+
+        // 2. Botão Secundário/Apagado (Cinza) -> 1 anúncio
+        const btnSecundario = document.createElement('button');
+        btnSecundario.type = 'button';
+        btnSecundario.className = 'w-full p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-850 text-slate-400 hover:text-slate-200 font-medium flex items-center justify-between border border-slate-800 transition-all active:scale-[0.99] text-left';
+        btnSecundario.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+            </div>
+            <div>
+              <span class="text-xs sm:text-sm font-semibold">Baixar Com Marca d'Água (Básico 720p)</span>
+              <p class="text-[11px] text-slate-500">Qualidade padrão da rede social</p>
+            </div>
+          </div>
+          <span class="text-[11px] text-slate-500 font-semibold">1 Anúncio</span>
+        `;
+        btnSecundario.onclick = () => iniciarFluxoDownload('watermark_low', 1);
+
+        // 3. Botão Áudio Original (MP3) -> 1 anúncio
+        const btnAudio = document.createElement('button');
+        btnAudio.type = 'button';
+        btnAudio.className = 'w-full p-3.5 rounded-2xl bg-purple-950/30 hover:bg-purple-900/40 text-purple-300 font-semibold flex items-center justify-between border border-purple-800/40 transition-all active:scale-[0.99] text-left';
+        btnAudio.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            </div>
+            <div>
+              <span class="text-xs sm:text-sm font-bold">Apenas Áudio Original (MP3)</span>
+              <p class="text-[11px] text-purple-400/80">Extrair faixa de música em alta fidelidade</p>
+            </div>
+          </div>
+          <span class="text-[11px] text-purple-400 font-semibold">1 Anúncio</span>
+        `;
+        btnAudio.onclick = () => iniciarFluxoDownload('audio_mp3', 1);
+
+        downloadButtonsContainer.appendChild(btnDestaque);
+        downloadButtonsContainer.appendChild(btnSecundario);
+        downloadButtonsContainer.appendChild(btnAudio);
+
+      } else {
+        // INSTAGRAM OU FACEBOOK
+        // 1. Botão Destaque: "Baixar Vídeo em Full HD 1080p (MP4)" -> 1 anúncio
+        const btnDestaque = document.createElement('button');
+        btnDestaque.type = 'button';
+        btnDestaque.className = 'w-full p-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-white font-extrabold flex items-center justify-between shadow-xl shadow-cyan-500/20 transition-all duration-200 active:scale-[0.99] group text-left';
+        btnDestaque.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 20h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm sm:text-base font-extrabold">Baixar Vídeo em Full HD 1080p (MP4)</span>
+              </div>
+              <p class="text-xs font-medium text-cyan-100/90 mt-0.5">Qualidade máxima liberada diretamente</p>
+            </div>
+          </div>
+          <div class="text-right flex items-center gap-2">
+            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black/30 text-white">1 Anúncio</span>
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        `;
+        btnDestaque.onclick = () => iniciarFluxoDownload('video_hd', 1);
+        downloadButtonsContainer.appendChild(btnDestaque);
+      }
+
+      previewCard.classList.remove('hidden');
+      previewCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // MODAL DE ANÚNCIO PREMIADO (REWARDED AD LOGIC)
+    function iniciarFluxoDownload(formato, qtdAnuncios) {
+      if (!state.currentSession || !state.currentSession.token) {
+        mostrarAlerta('Sessão expirada', 'Por favor, consulte o link novamente.');
+        return;
+      }
+
+      state.ad.targetFormat = formato;
+      state.ad.totalSteps = qtdAnuncios;
+      state.ad.currentStep = 1;
+
+      abrirModalAnuncio();
+      executarEtapaAnuncio();
+    }
+
+    function abrirModalAnuncio() {
+      rewardedAdModal.classList.remove('hidden');
+      adTransitionOverlay.classList.add('hidden');
+      adSuccessOverlay.classList.add('hidden');
+      document.body.style.overflow = 'hidden'; // Bloqueia scroll de fundo
+    }
+
+    function fecharModalAnuncio() {
+      if (state.ad.timerInterval) clearInterval(state.ad.timerInterval);
+      rewardedAdModal.classList.add('hidden');
+      document.body.style.overflow = '';
+      try {
+        adVideoPlayer.pause();
+        adVideoPlayer.currentTime = 0;
+      } catch (e) {}
+    }
+
+    function toggleAdMute() {
+      state.ad.isMuted = !state.ad.isMuted;
+      adVideoPlayer.muted = state.ad.isMuted;
+      if (state.ad.isMuted) {
+        iconVolumeMuted.classList.remove('hidden');
+        iconVolumeUnmuted.classList.add('hidden');
+        labelVolume.textContent = 'Ativar Som';
+      } else {
+        iconVolumeMuted.classList.add('hidden');
+        iconVolumeUnmuted.classList.remove('hidden');
+        labelVolume.textContent = 'Silenciar';
+      }
+    }
+
+    function executarEtapaAnuncio() {
+      if (state.ad.timerInterval) clearInterval(state.ad.timerInterval);
+
+      adTransitionOverlay.classList.add('hidden');
+      adSuccessOverlay.classList.add('hidden');
+
+      const step = state.ad.currentStep;
+      const total = state.ad.totalSteps;
+
+      adStepBadge.textContent = `Etapa ${step}/${total}`;
+
+      if (total === 2) {
+        if (step === 1) {
+          adStepTitle.textContent = "Etapa 1/2: Removendo marca d'água...";
+        } else {
+          adStepTitle.textContent = "Etapa 2/2: Liberando qualidade máxima 1080p...";
+        }
+      } else {
+        adStepTitle.textContent = "Etapa 1/1: Preparando download em alta fidelidade...";
+      }
+
+      // Reinicia player de vídeo e barra de progresso
+      state.ad.timeLeft = state.ad.durationPerStep;
+      adTimerText.textContent = `Aguarde ${state.ad.timeLeft}s`;
+      adProgressBar.style.width = '0%';
+
+      // Inicia player de vídeo com tratamento caso o navegador bloqueie autoplay com som
+      adVideoPlayer.currentTime = 0;
+      adVideoPlayer.muted = state.ad.isMuted;
+      
+      const playPromise = adVideoPlayer.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay foi bloqueado ou falhou na rede: temporizador continua de forma confiável
+        });
+      }
+
+      // Temporizador regressivo
+      const startTime = Date.now();
+      const totalMs = state.ad.durationPerStep * 1000;
+
+      state.ad.timerInterval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, Math.ceil((totalMs - elapsed) / 1000));
+        const progressPercent = Math.min(100, (elapsed / totalMs) * 100);
+
+        adProgressBar.style.width = `${progressPercent}%`;
+        adTimerText.textContent = remaining > 0 ? `Aguarde ${remaining}s` : 'Concluído!';
+
+        if (elapsed >= totalMs) {
+          clearInterval(state.ad.timerInterval);
+          concluirEtapaAtual();
+        }
+      }, 100);
+    }
+
+    // Se o vídeo terminar antes do tempo estimado, conclui
+    adVideoPlayer.onended = () => {
+      if (state.ad.timerInterval) clearInterval(state.ad.timerInterval);
+      concluirEtapaAtual();
+    };
+
+    function concluirEtapaAtual() {
+      if (state.ad.totalSteps === 2 && state.ad.currentStep === 1) {
+        // Exibe overlay de transição de 1.5s ("Marca d'água removida!")
+        adTransitionOverlay.classList.remove('hidden');
+        try { adVideoPlayer.pause(); } catch (e) {}
+
+        setTimeout(() => {
+          state.ad.currentStep = 2;
+          executarEtapaAnuncio();
+        }, 1500);
+
+      } else {
+        // Último anúncio concluído!
+        adSuccessOverlay.classList.remove('hidden');
+        adProgressBar.style.width = '100%';
+        try { adVideoPlayer.pause(); } catch (e) {}
+
+        setTimeout(() => {
+          const downloadUrl = `/api/download/${state.currentSession.token}/${state.ad.targetFormat}`;
+          fecharModalAnuncio();
+          dispararDownload(downloadUrl);
+        }, 900);
+      }
+    }
+
+    function pularAnuncioDebug() {
+      if (state.ad.timerInterval) clearInterval(state.ad.timerInterval);
+      concluirEtapaAtual();
+    }
+
+    // DISPARADOR DE DOWNLOAD AUTOMÁTICO
+    function dispararDownload(url) {
+      // Criação de link temporário invisível com download
+      const tempLink = document.createElement('a');
+      tempLink.style.display = 'none';
+      tempLink.href = url;
+      tempLink.setAttribute('download', '');
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      
+      setTimeout(() => {
+        document.body.removeChild(tempLink);
+      }, 2000);
+
+      mostrarAlerta('Download Iniciado!', 'Se o download não começar em instantes, clique no botão novamente.', 'info');
+    }
+  </script>
+</body>
+</html>
