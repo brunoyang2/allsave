@@ -1070,62 +1070,68 @@
         // 1. Botão Destaque (Verde/Ciano) -> 2 anúncios
         const btnDestaque = document.createElement('button');
         btnDestaque.type = 'button';
-        btnDestaque.className = 'w-full p-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-extrabold flex items-center justify-between shadow-xl glow-emerald hover:shadow-emerald-500/50 transition-all duration-200 active:scale-[0.99] group text-left';
+        btnDestaque.className = 'w-full p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-extrabold flex items-center justify-between gap-3 shadow-xl glow-emerald hover:shadow-emerald-500/50 transition-all duration-200 active:scale-[0.99] group text-left';
         btnDestaque.innerHTML = `
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-slate-950/20 flex items-center justify-center text-slate-950">
+          <div class="flex items-center gap-3 min-w-0 flex-1">
+            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-950/20 flex-shrink-0 flex items-center justify-center text-slate-950">
               <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                 <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 20h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               </svg>
             </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="text-sm sm:text-base font-extrabold">Baixar Sem Marca d'Água</span>
-                <span class="px-2 py-0.5 rounded-full bg-slate-950/30 text-slate-950 text-[10px] font-black uppercase tracking-wider">HD Máximo 1080p</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-sm sm:text-base font-extrabold tracking-tight">Baixar Sem Marca d'Água</span>
+                <span class="px-2 py-0.5 rounded-full bg-slate-950/25 text-slate-950 text-[10px] font-black uppercase tracking-wider whitespace-nowrap">HD 1080p</span>
               </div>
-              <p class="text-xs font-semibold text-slate-900/90 mt-0.5">Qualidade máxima limpa • Recomendado</p>
+              <p class="text-xs font-semibold text-slate-900/80 mt-0.5 truncate">Qualidade máxima limpa • Recomendado</p>
             </div>
           </div>
-          <div class="text-right flex items-center gap-2">
-            <span class="hidden sm:inline-block text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black/20 text-slate-950">2 Anúncios</span>
-            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+          <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black/20 text-slate-950 whitespace-nowrap">2 Anúncios</span>
+            <svg class="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
           </div>
         `;
         btnDestaque.onclick = () => iniciarFluxoDownload('no_watermark_hd', 2);
 
-        // 2. Botão Secundário/Apagado (Cinza) -> 1 anúncio
+        // 2. Botão Secundário (Cinza) -> 1 anúncio
         const btnSecundario = document.createElement('button');
         btnSecundario.type = 'button';
-        btnSecundario.className = 'w-full p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-850 text-slate-400 hover:text-slate-200 font-medium flex items-center justify-between border border-slate-800 transition-all active:scale-[0.99] text-left';
+        btnSecundario.className = 'w-full p-3 sm:p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-850 text-slate-400 hover:text-slate-200 font-medium flex items-center justify-between gap-3 border border-slate-800 transition-all active:scale-[0.99] text-left';
         btnSecundario.innerHTML = `
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400">
+          <div class="flex items-center gap-3 min-w-0 flex-1">
+            <div class="w-9 h-9 rounded-xl bg-slate-800 flex-shrink-0 flex items-center justify-center text-slate-400">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
             </div>
-            <div>
-              <span class="text-xs sm:text-sm font-semibold">Baixar Com Marca d'Água (Básico 720p)</span>
-              <p class="text-[11px] text-slate-500">Qualidade padrão da rede social</p>
+            <div class="min-w-0 flex-1">
+              <span class="text-xs sm:text-sm font-semibold truncate block">Baixar Com Marca d'Água (720p)</span>
+              <p class="text-[11px] text-slate-500 mt-0.5 truncate">Qualidade padrão da rede social</p>
             </div>
           </div>
-          <span class="text-[11px] text-slate-500 font-semibold">1 Anúncio</span>
+          <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+            <span class="text-[11px] text-slate-400 font-semibold px-2 py-0.5 rounded bg-slate-800 whitespace-nowrap">1 Anúncio</span>
+            <svg class="w-4 h-4 flex-shrink-0 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
         `;
         btnSecundario.onclick = () => iniciarFluxoDownload('watermark_low', 1);
 
         // 3. Botão Áudio Original (MP3) -> 1 anúncio
         const btnAudio = document.createElement('button');
         btnAudio.type = 'button';
-        btnAudio.className = 'w-full p-3.5 rounded-2xl bg-purple-950/30 hover:bg-purple-900/40 text-purple-300 font-semibold flex items-center justify-between border border-purple-800/40 transition-all active:scale-[0.99] text-left';
+        btnAudio.className = 'w-full p-3 sm:p-3.5 rounded-2xl bg-purple-950/30 hover:bg-purple-900/40 text-purple-300 font-semibold flex items-center justify-between gap-3 border border-purple-800/40 transition-all active:scale-[0.99] text-left';
         btnAudio.innerHTML = `
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-purple-900/50 flex items-center justify-center text-purple-300">
+          <div class="flex items-center gap-3 min-w-0 flex-1">
+            <div class="w-9 h-9 rounded-xl bg-purple-900/50 flex-shrink-0 flex items-center justify-center text-purple-300">
               <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
             </div>
-            <div>
-              <span class="text-xs sm:text-sm font-bold">Apenas Áudio Original (MP3)</span>
-              <p class="text-[11px] text-purple-400/80">Extrair faixa de música em alta fidelidade</p>
+            <div class="min-w-0 flex-1">
+              <span class="text-xs sm:text-sm font-bold truncate block">Apenas Áudio Original (MP3)</span>
+              <p class="text-[11px] text-purple-400/80 mt-0.5 truncate">Extrair faixa musical em alta fidelidade</p>
             </div>
           </div>
-          <span class="text-[11px] text-purple-400 font-semibold">1 Anúncio</span>
+          <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+            <span class="text-[11px] text-purple-300 font-semibold px-2 py-0.5 rounded bg-purple-900/40 whitespace-nowrap">1 Anúncio</span>
+            <svg class="w-4 h-4 flex-shrink-0 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
         `;
         btnAudio.onclick = () => iniciarFluxoDownload('audio_mp3', 1);
 
@@ -1138,25 +1144,25 @@
         // Botão Destaque: Exige 2 etapas de anúncios por padrão
         const btnDestaque = document.createElement('button');
         btnDestaque.type = 'button';
-        btnDestaque.className = 'w-full p-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-white font-extrabold flex items-center justify-between shadow-xl shadow-cyan-500/20 transition-all duration-200 active:scale-[0.99] group text-left';
+        btnDestaque.className = 'w-full p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 text-white font-extrabold flex items-center justify-between gap-3 shadow-xl shadow-cyan-500/20 transition-all duration-200 active:scale-[0.99] group text-left';
         btnDestaque.innerHTML = `
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white">
+          <div class="flex items-center gap-3 min-w-0 flex-1">
+            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white/20 flex-shrink-0 flex items-center justify-center text-white shadow-sm">
               <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                 <path d="M12 3v11m0 0l-4-4m4 4l4-4M5 20h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
               </svg>
             </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="text-sm sm:text-base font-extrabold">Baixar Vídeo em Full HD 1080p (MP4)</span>
-                <span class="px-2 py-0.5 rounded-full bg-black/30 text-white text-[10px] font-black uppercase tracking-wider">Alta Resolução</span>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-sm sm:text-base font-extrabold tracking-tight">Baixar Vídeo em Full HD (1080p)</span>
+                <span class="px-2 py-0.5 rounded-full bg-black/25 text-white text-[10px] font-black uppercase tracking-wider whitespace-nowrap">Alta Resolução</span>
               </div>
-              <p class="text-xs font-medium text-cyan-100/90 mt-0.5">Qualidade máxima limpa • 2 Anúncios rápidos</p>
+              <p class="text-xs font-medium text-cyan-100/90 mt-0.5 truncate">Qualidade máxima original sem compressão</p>
             </div>
           </div>
-          <div class="text-right flex items-center gap-2">
-            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black/30 text-white">2 Anúncios</span>
-            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+          <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black/25 text-white whitespace-nowrap">2 Anúncios</span>
+            <svg class="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
           </div>
         `;
         btnDestaque.onclick = () => iniciarFluxoDownload('video_hd', 2);
