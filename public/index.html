@@ -382,10 +382,9 @@
         <div id="step1Ads" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full">
           <!-- Anúncio 1A: VPN Turbo -->
           <a 
-            href="https://afders.org/1/1a38bdd16f58578a723320a902840a8c" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-indigo-950/90 via-slate-900/90 to-slate-950 border border-indigo-500/40 hover:border-cyan-400 shadow-xl hover:shadow-cyan-500/20 transition-all duration-200 hover:-translate-y-0.5"
+            href="javascript:void(0)"
+            onclick="handleAdClick(event)"
+            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-indigo-950/90 via-slate-900/90 to-slate-950 border border-indigo-500/40 hover:border-cyan-400 shadow-xl hover:shadow-cyan-500/20 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
           >
             <div class="flex items-start justify-between mb-2">
               <span class="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
@@ -421,10 +420,9 @@
 
           <!-- Anúncio 1B: Acelerador de Vídeos -->
           <a 
-            href="https://afders.org/1/1a38bdd16f58578a723320a902840a8c" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-emerald-950/90 via-slate-900/90 to-slate-950 border border-emerald-500/40 hover:border-emerald-400 shadow-xl hover:shadow-emerald-500/20 transition-all duration-200 hover:-translate-y-0.5"
+            href="javascript:void(0)"
+            onclick="handleAdClick(event)"
+            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-emerald-950/90 via-slate-900/90 to-slate-950 border border-emerald-500/40 hover:border-emerald-400 shadow-xl hover:shadow-emerald-500/20 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
           >
             <div class="flex items-start justify-between mb-2">
               <span class="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
@@ -463,10 +461,9 @@
         <div id="step2Ads" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full hidden">
           <!-- Anúncio 2A: Recompensas e Bônus -->
           <a 
-            href="https://afders.org/1/1a38bdd16f58578a723320a902840a8c" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-amber-950/90 via-slate-900/90 to-slate-950 border border-amber-500/40 hover:border-amber-400 shadow-xl hover:shadow-amber-500/20 transition-all duration-200 hover:-translate-y-0.5"
+            href="javascript:void(0)"
+            onclick="handleAdClick(event)"
+            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-amber-950/90 via-slate-900/90 to-slate-950 border border-amber-500/40 hover:border-amber-400 shadow-xl hover:shadow-amber-500/20 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
           >
             <div class="flex items-start justify-between mb-2">
               <span class="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
@@ -502,10 +499,9 @@
 
           <!-- Anúncio 2B: Armazenamento em Nuvem -->
           <a 
-            href="https://afders.org/1/1a38bdd16f58578a723320a902840a8c" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-purple-950/90 via-slate-900/90 to-slate-950 border border-purple-500/40 hover:border-purple-400 shadow-xl hover:shadow-purple-500/20 transition-all duration-200 hover:-translate-y-0.5"
+            href="javascript:void(0)"
+            onclick="handleAdClick(event)"
+            class="group relative flex flex-col justify-between p-4 rounded-2xl bg-gradient-to-b from-purple-950/90 via-slate-900/90 to-slate-950 border border-purple-500/40 hover:border-purple-400 shadow-xl hover:shadow-purple-500/20 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
           >
             <div class="flex items-start justify-between mb-2">
               <span class="px-2 py-0.5 rounded text-[10px] font-extrabold tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
@@ -1309,6 +1305,12 @@
         'A transferência foi iniciada. Se o download não começar sozinho, <a href="' + url + '" class="underline font-extrabold text-cyan-300 hover:text-white ml-1">clique aqui para baixar diretamente</a>.', 
         'info'
       );
+    }
+
+    // DISPARADOR DE CLIQUE DO ANÚNCIO (Ativa o Popunder do Adsterra sem abrir tela de código)
+    function handleAdClick(e) {
+      // Deixa o evento propagar normalmente para o script do Adsterra capturar e abrir a oferta
+      console.log('Ad clicked - Adsterra listener triggered');
     }
   </script>
 </body>
