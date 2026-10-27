@@ -603,17 +603,48 @@
           </p>
         </div>
 
-        <!-- Overlay de Sucesso Final (Download Iminente) -->
-        <div id="adSuccessOverlay" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center hidden z-40 animate-in fade-in duration-300">
-          <div class="w-16 h-16 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/40 mb-3 shadow-lg shadow-cyan-500/30">
-            <svg class="w-8 h-8 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Overlay de Sucesso Final (Download Desbloqueado com Botão Direto) -->
+        <div id="adSuccessOverlay" class="absolute inset-0 bg-slate-950/98 backdrop-blur-md flex flex-col items-center justify-center p-5 sm:p-8 text-center hidden z-40 animate-in fade-in duration-300">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 mb-3 shadow-xl shadow-emerald-500/30 animate-bounce">
+            <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
             </svg>
           </div>
-          <h4 class="text-lg font-extrabold text-white mb-1">Download Liberado! 🎉</h4>
-          <p class="text-xs text-cyan-300">
-            Iniciando transferência direta do seu arquivo...
+          
+          <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/30 mb-2">
+            ✓ Anúncios Concluídos
+          </span>
+          
+          <h4 class="text-lg sm:text-xl font-extrabold text-white mb-1">Download Desbloqueado! 🎉</h4>
+          <p class="text-xs text-slate-300 max-w-sm mb-4">
+            O download foi iniciado. Caso não comece sozinho no seu aparelho, toque no botão abaixo:
           </p>
+
+          <!-- BOTÃO PRINCIPAL DE DOWNLOAD DIRETO (MOBILE E PC) -->
+          <a 
+            id="btnDownloadDiretoFinal" 
+            href="#"
+            download="allsave-video.mp4"
+            class="w-full max-w-xs px-6 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-2xl shadow-emerald-500/40 hover:scale-105 active:scale-95 transition-all mb-3.5 group cursor-pointer"
+          >
+            <svg class="w-5 h-5 flex-shrink-0 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            <span id="btnDownloadDiretoTexto">BAIXAR VÍDEO AGORA</span>
+          </a>
+
+          <!-- Dica útil para celular iPhone/Android -->
+          <p class="text-[11px] text-slate-400 max-w-xs leading-snug mb-4">
+            💡 <strong>No celular:</strong> Se o vídeo abrir no reprodutor, toque em <strong>Compartilhar ➔ Salvar Vídeo</strong>.
+          </p>
+
+          <button 
+            type="button" 
+            onclick="fecharModalAnuncio()" 
+            class="text-xs text-slate-400 hover:text-white px-4 py-1.5 rounded-lg border border-slate-800 hover:bg-slate-900 transition-colors"
+          >
+            Fechar / Baixar outro vídeo
+          </button>
         </div>
 
       </div>
@@ -1337,14 +1368,30 @@
 
       } else {
         // Último anúncio concluído!
+        const downloadUrl = `/api/download/${state.currentSession.token}/${state.ad.targetFormat}`;
+        const isAudio = state.ad.targetFormat === 'audio_mp3';
+        const filename = isAudio ? 'allsave-audio.mp3' : 'allsave-video.mp4';
+
+        // Configura o botão direto de download do modal
+        const btnDireto = document.getElementById('btnDownloadDiretoFinal');
+        const btnTexto = document.getElementById('btnDownloadDiretoTexto');
+        if (btnDireto) {
+          btnDireto.href = downloadUrl;
+          btnDireto.setAttribute('download', filename);
+          if (btnTexto) {
+            btnTexto.textContent = isAudio ? 'BAIXAR ÁUDIO MP3 AGORA' : 'BAIXAR VÍDEO AGORA';
+          }
+        }
+
+        // Exibe o painel de sucesso com o botão
         adSuccessOverlay.classList.remove('hidden');
         adProgressBar.style.width = '100%';
+        if (adTimerText) adTimerText.textContent = 'Liberado!';
+        if (adStepBadge) adStepBadge.textContent = 'Download Pronto';
+        if (adStepTitle) adStepTitle.textContent = 'Qualidade máxima desbloqueada!';
 
-        setTimeout(() => {
-          const downloadUrl = `/api/download/${state.currentSession.token}/${state.ad.targetFormat}`;
-          fecharModalAnuncio();
-          dispararDownload(downloadUrl);
-        }, 900);
+        // Dispara o download automático em paralelo (para PCs e celulares que aceitam)
+        dispararDownload(downloadUrl);
       }
     }
 

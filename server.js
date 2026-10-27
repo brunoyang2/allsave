@@ -279,9 +279,10 @@ app.get('/api/download/:token/:formato', async (req, res) => {
   const fileUrl = session.links[formato];
   if (!fileUrl) return res.status(404).send('Formato indisponível.');
 
-  // Se estiver na Vercel ou for link direto de CDN do Facebook/Instagram, redireciona diretamente!
-  // Isso evita o timeout de 10s da Vercel Serverless Function e o erro 403 Forbidden que o Facebook impõe a servidores em nuvem.
-  if (process.env.VERCEL || /fbcdn\.net|cdninstagram\.com|instagram\.com/i.test(fileUrl)) {
+  // Apenas redireciona se for CDN protegida da Meta (Facebook/Instagram), pois bloqueiam stream de IP de servidor.
+  // Para TikTok e outras fontes, faz o stream proxy com cabeçalho forçado de download (Content-Disposition: attachment).
+  const isMetaCdn = /fbcdn\.net|cdninstagram\.com|instagram\.com/i.test(fileUrl);
+  if (isMetaCdn) {
     return res.redirect(302, fileUrl);
   }
 
