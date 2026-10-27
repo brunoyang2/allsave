@@ -617,7 +617,7 @@
           
           <h4 class="text-lg sm:text-xl font-extrabold text-white mb-1">Download Desbloqueado! 🎉</h4>
           <p class="text-xs text-slate-300 max-w-sm mb-4">
-            O download foi iniciado. Caso não comece sozinho no seu aparelho, toque no botão abaixo:
+            Anúncios concluídos com sucesso! Toque no botão abaixo para salvar o arquivo:
           </p>
 
           <!-- BOTÃO PRINCIPAL DE DOWNLOAD DIRETO (MOBILE E PC) -->
@@ -1270,6 +1270,11 @@
       rewardedAdModal.classList.remove('hidden');
       adTransitionOverlay.classList.add('hidden');
       adSuccessOverlay.classList.add('hidden');
+
+      // Restaura o botão de pular/cancelar para o início do anúncio
+      const btnPular = document.getElementById('btnPularCancelarAd');
+      if (btnPular) btnPular.classList.remove('hidden');
+
       document.body.style.overflow = 'hidden'; // Bloqueia scroll de fundo
 
       // Dispara o script do Native Banner do Adsterra caso ainda não tenha sido populado
@@ -1370,7 +1375,12 @@
         // Último anúncio concluído!
         const downloadUrl = `/api/download/${state.currentSession.token}/${state.ad.targetFormat}`;
         const isAudio = state.ad.targetFormat === 'audio_mp3';
-        const filename = isAudio ? 'allsave-audio.mp3' : 'allsave-video.mp4';
+        const random7 = Math.floor(1000000 + Math.random() * 9000000);
+        const filename = isAudio ? `allsave-${random7}.mp3` : `allsave-${random7}.mp4`;
+
+        // Oculta o botão Pular (Cancelar Download), pois todos os anúncios já foram concluídos!
+        const btnPular = document.getElementById('btnPularCancelarAd');
+        if (btnPular) btnPular.classList.add('hidden');
 
         // Configura o botão direto de download do modal
         const btnDireto = document.getElementById('btnDownloadDiretoFinal');
@@ -1381,6 +1391,10 @@
           if (btnTexto) {
             btnTexto.textContent = isAudio ? 'BAIXAR ÁUDIO MP3 AGORA' : 'BAIXAR VÍDEO AGORA';
           }
+          // O download agora acontece EXATAMENTE ao clicar ou tocar neste botão!
+          btnDireto.onclick = (e) => {
+            dispararDownload(downloadUrl, filename);
+          };
         }
 
         // Exibe o painel de sucesso com o botão
@@ -1390,8 +1404,7 @@
         if (adStepBadge) adStepBadge.textContent = 'Download Pronto';
         if (adStepTitle) adStepTitle.textContent = 'Qualidade máxima desbloqueada!';
 
-        // Dispara o download automático em paralelo (para PCs e celulares que aceitam)
-        dispararDownload(downloadUrl);
+        // Download automático suspenso: agora aguarda o clique direto do usuário no botão!
       }
     }
 
@@ -1412,20 +1425,23 @@
       );
     }
 
-    // DISPARADOR DE DOWNLOAD AUTOMÁTICO
-    function dispararDownload(url) {
-      // Dispara o download de forma nativa e compatível com mobile/desktop
+    // DISPARADOR DE DOWNLOAD COM NOME PERSONALIZADO
+    function dispararDownload(url, customFilename) {
+      const isAudio = url.includes('audio_mp3');
+      const random7 = Math.floor(1000000 + Math.random() * 9000000);
+      const filename = customFilename || (isAudio ? `allsave-${random7}.mp3` : `allsave-${random7}.mp4`);
+
+      // Dispara o download com o nome aleatório de 7 dígitos formatado
       const tempLink = document.createElement('a');
       tempLink.href = url;
-      tempLink.setAttribute('download', '');
+      tempLink.setAttribute('download', filename);
       document.body.appendChild(tempLink);
       tempLink.click();
       setTimeout(() => document.body.removeChild(tempLink), 2000);
 
-      // Alerta com botão/link de clique manual direto caso o navegador bloqueie popups
       mostrarAlerta(
-        'Download Liberado! 🎉', 
-        'A transferência foi iniciada. Se o download não começar sozinho, <a href="' + url + '" class="underline font-extrabold text-cyan-300 hover:text-white ml-1">clique aqui para baixar diretamente</a>.', 
+        'Download Iniciado! 🎉', 
+        `Transferindo arquivo <strong>${filename}</strong>. Se não iniciar automaticamente, <a href="${url}" download="${filename}" class="underline font-extrabold text-cyan-300 hover:text-white ml-1">clique aqui</a>.`, 
         'info'
       );
     }

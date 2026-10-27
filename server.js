@@ -303,7 +303,8 @@ app.get('/api/download/:token/:formato', async (req, res) => {
     });
 
     const isAudio = formato === 'audio_mp3';
-    const filename = isAudio ? 'allsave-audio.mp3' : 'allsave-video.mp4';
+    const random7 = Math.floor(1000000 + Math.random() * 9000000);
+    const filename = isAudio ? `allsave-${random7}.mp3` : `allsave-${random7}.mp4`;
     res.setHeader('Content-Type', isAudio ? 'audio/mpeg' : 'video/mp4');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     if (upstream.headers['content-length']) res.setHeader('Content-Length', upstream.headers['content-length']);
