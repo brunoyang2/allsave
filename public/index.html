@@ -603,9 +603,22 @@
           </p>
         </div>
 
-        <!-- Overlay de Sucesso Final (Download Desbloqueado com Botão Direto) -->
-        <div id="adSuccessOverlay" class="absolute inset-0 bg-slate-950/98 backdrop-blur-md flex flex-col items-center justify-center p-5 sm:p-8 text-center hidden z-40 animate-in fade-in duration-300">
-          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 mb-3 shadow-xl shadow-emerald-500/30 animate-bounce">
+        <!-- Overlay de Sucesso Final (Download Desbloqueado com Botão Direto e Opção Clara de Retorno) -->
+        <div id="adSuccessOverlay" class="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center p-5 sm:p-8 text-center hidden z-40 animate-in fade-in duration-300">
+          
+          <!-- Botão Fechar (X) Rápido no Topo -->
+          <button 
+            type="button" 
+            onclick="fecharModalAnuncio()" 
+            title="Fechar e voltar à página principal"
+            class="absolute top-3.5 right-3.5 w-9 h-9 rounded-full bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center border border-slate-700/80 shadow-md transition-all active:scale-90 cursor-pointer"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40 mb-2.5 shadow-xl shadow-emerald-500/30 animate-bounce">
             <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
             </svg>
@@ -620,12 +633,12 @@
             Anúncios concluídos com sucesso! Toque no botão abaixo para salvar o arquivo:
           </p>
 
-          <!-- BOTÃO PRINCIPAL DE DOWNLOAD DIRETO (MOBILE E PC) -->
+          <!-- BOTÃO 1 (DESTAQUE MÁXIMO): BAIXAR VÍDEO -->
           <a 
             id="btnDownloadDiretoFinal" 
             href="#"
             download="allsave-video.mp4"
-            class="w-full max-w-xs px-6 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-2xl shadow-emerald-500/40 hover:scale-105 active:scale-95 transition-all mb-3.5 group cursor-pointer"
+            class="w-full max-w-xs px-6 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-2xl shadow-emerald-500/40 hover:scale-105 active:scale-95 transition-all mb-3 group cursor-pointer"
           >
             <svg class="w-5 h-5 flex-shrink-0 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -633,18 +646,22 @@
             <span id="btnDownloadDiretoTexto">BAIXAR VÍDEO AGORA</span>
           </a>
 
-          <!-- Dica útil para celular iPhone/Android -->
-          <p class="text-[11px] text-slate-400 max-w-xs leading-snug mb-4">
-            💡 <strong>No celular:</strong> Se o vídeo abrir no reprodutor, toque em <strong>Compartilhar ➔ Salvar Vídeo</strong>.
-          </p>
-
+          <!-- BOTÃO 2 (SECUNDÁRIO DESTACADO): VOLTAR / BAIXAR OUTRO VÍDEO -->
           <button 
             type="button" 
             onclick="fecharModalAnuncio()" 
-            class="text-xs text-slate-400 hover:text-white px-4 py-1.5 rounded-lg border border-slate-800 hover:bg-slate-900 transition-colors"
+            class="w-full max-w-xs px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 border border-slate-600/80 shadow-lg active:scale-95 transition-all cursor-pointer mb-3.5 group"
           >
-            Fechar / Baixar outro vídeo
+            <svg class="w-4 h-4 text-cyan-400 group-hover:-translate-x-1 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            <span>Concluir e Baixar Outro Vídeo</span>
           </button>
+
+          <!-- Dica útil para celular iPhone/Android -->
+          <p class="text-[11px] text-slate-400 max-w-xs leading-snug">
+            💡 <strong>No celular:</strong> Se o vídeo abrir no reprodutor, toque em <strong>Compartilhar ➔ Salvar Vídeo</strong>.
+          </p>
         </div>
 
       </div>
