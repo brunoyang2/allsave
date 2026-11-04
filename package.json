@@ -1,7 +1,7 @@
 {
   "name": "allsave",
   "version": "1.0.0",
-  "description": "AllSave - Downloader de vídeos TikTok, Instagram e Facebook",
+  "description": "VidSave - Downloader de vídeos TikTok, Instagram e Facebook",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

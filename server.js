@@ -281,7 +281,7 @@ app.get(['/api/download/:token/:formato', '/api/download/:token/:formato/:filena
 
   const isAudio = formato === 'audio_mp3';
   const random7 = Math.floor(1000000 + Math.random() * 9000000);
-  const defaultFilename = isAudio ? `allsave-${random7}.mp3` : `allsave-${random7}.mp4`;
+  const defaultFilename = isAudio ? `vidsave-${random7}.mp3` : `vidsave-${random7}.mp4`;
   const filename = req.params.filename || defaultFilename;
 
   try {
@@ -314,7 +314,7 @@ app.get(['/api/download/:token/:formato', '/api/download/:token/:formato/:filena
 });
 
 if (!process.env.VERCEL) {
-  app.listen(PORT, () => console.log(`AllSave rodando em http://localhost:${PORT}`));
+  app.listen(PORT, () => console.log(`VidSave rodando em http://localhost:${PORT}`));
 }
 
 module.exports = app;
