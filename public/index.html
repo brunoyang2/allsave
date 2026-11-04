@@ -170,7 +170,8 @@
         </div>
 
         <h1 class="text-2xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
-          Baixar Vídeos do <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">TikTok</span>,
+          Baixar Vídeos do <span class="bg-gradient-to-r from-red-500 via-rose-500 to-amber-500 bg-clip-text text-transparent">YouTube</span>,
+          <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">TikTok</span>,
           <span class="bg-gradient-to-r from-pink-500 via-rose-500 to-amber-400 bg-clip-text text-transparent">Instagram</span> & 
           <span class="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">Facebook</span>
         </h1>
@@ -197,7 +198,7 @@
               id="urlInput"
               autocomplete="off"
               spellcheck="false"
-              placeholder="Cole o link do TikTok, Instagram ou Facebook..." 
+              placeholder="Cole o link do YouTube, TikTok, Instagram ou Facebook..." 
               class="w-full bg-slate-900/80 text-white placeholder-slate-500 text-sm sm:text-base pl-9 sm:pl-11 pr-20 sm:pr-24 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl border border-transparent focus:outline-none focus:bg-slate-900 transition-colors"
               required
             >
@@ -265,9 +266,9 @@
       <div id="previewCard" class="hidden glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-7 border border-slate-800 shadow-2xl transition-all duration-500">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8 items-center">
           
-          <!-- Miniatura Vertical 9:16 (Responsiva para caber em telas mobile) -->
-          <div class="md:col-span-5 flex justify-center">
-            <div class="relative w-full max-w-[170px] sm:max-w-[210px] md:max-w-[240px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl border border-slate-700/80 bg-slate-900 group">
+          <!-- Miniatura Adaptável (Horizontal 16:9 ou Vertical 9:16) -->
+          <div id="previewThumbCol" class="md:col-span-5 flex justify-center">
+            <div id="previewThumbCard" class="relative w-full max-w-[170px] sm:max-w-[210px] md:max-w-[240px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl border border-slate-700/80 bg-slate-900 group transition-all duration-300">
               <img 
                 id="previewThumb" 
                 src="" 
@@ -1015,6 +1016,12 @@
         name: 'Facebook',
         badgeClass: 'bg-[#1877f2]/20 text-[#4599ff] border border-[#1877f2]/40',
         icon: `<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`
+      },
+      youtube: {
+        pattern: /^(https?:\/\/)?([\w-]+\.)?(youtube\.com|youtu\.be)\/.+/i,
+        name: 'YouTube',
+        badgeClass: 'bg-red-500/20 text-red-400 border border-red-500/40',
+        icon: `<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`
       }
     };
 
@@ -1055,6 +1062,12 @@
 
     urlInput.addEventListener('input', atualizarBadge);
     urlInput.addEventListener('paste', () => setTimeout(atualizarBadge, 20));
+
+    function testarPreviaYouTube() {
+      urlInput.value = 'https://www.youtube.com/watch?v=QUcUalX1OYY';
+      atualizarBadge();
+      extrairVideo();
+    }
 
     function limparInput() {
       urlInput.value = '';
@@ -1157,6 +1170,37 @@
       const thumbUrl = data.thumbnail ? `/api/thumb?u=${encodeURIComponent(data.thumbnail)}` : 'https://placehold.co/720x1280/0f172a/38bdf8?text=VidSave+HD';
       previewThumb.src = thumbUrl;
 
+      // Adapta proporção da miniatura (16:9 se horizontal, 9:16 se vertical)
+      const thumbCard = document.getElementById('previewThumbCard');
+      const thumbCol = document.getElementById('previewThumbCol');
+
+      function aplicarAspecto(isLandscape) {
+        if (!thumbCard) return;
+        if (isLandscape) {
+          // Horizontal (16:9 Widescreen do YouTube/Facebook)
+          thumbCard.className = "relative w-full max-w-[340px] sm:max-w-[420px] md:max-w-[460px] aspect-video rounded-2xl overflow-hidden shadow-2xl border border-slate-700/80 bg-slate-900 group transition-all duration-300";
+          if (thumbCol) thumbCol.className = "md:col-span-6 flex justify-center";
+        } else {
+          // Vertical (9:16 do TikTok/Reels/Shorts)
+          thumbCard.className = "relative w-full max-w-[170px] sm:max-w-[210px] md:max-w-[240px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl border border-slate-700/80 bg-slate-900 group transition-all duration-300";
+          if (thumbCol) thumbCol.className = "md:col-span-5 flex justify-center";
+        }
+      }
+
+      // Aplica imediatamente baseado na orientação informada pelo backend
+      if (data.plataforma === 'youtube') {
+        aplicarAspecto(!data.isVertical);
+      } else {
+        aplicarAspecto(false);
+      }
+
+      // Além disso, quando a imagem carregar no navegador, calibra conforme a largura real
+      previewThumb.onload = function() {
+        if (this.naturalWidth && this.naturalHeight) {
+          aplicarAspecto(this.naturalWidth > this.naturalHeight);
+        }
+      };
+
       // Renderiza botões de download de acordo com as regras da plataforma
       downloadButtonsContainer.innerHTML = '';
 
@@ -1233,6 +1277,170 @@
         downloadButtonsContainer.appendChild(btnDestaque);
         downloadButtonsContainer.appendChild(btnSecundario);
         downloadButtonsContainer.appendChild(btnAudio);
+
+      } else if (data.plataforma === 'youtube') {
+        // YOUTUBE: SELETOR DE MULTI-QUALIDADES (VÍDEO 1080p, 720p, 480p E MP3 320k, 192k, 128k)
+        const ytWrapper = document.createElement('div');
+        ytWrapper.className = 'w-full space-y-3';
+        ytWrapper.innerHTML = `
+          <!-- Abas de Seleção: Vídeo vs Áudio -->
+          <div class="flex items-center gap-2 p-1 rounded-2xl bg-slate-900/90 border border-slate-800">
+            <button type="button" id="tabYtVideo" class="flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 via-rose-600 to-red-500 text-white shadow-lg shadow-red-600/30 transition-all">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm6 4v8l6-4-6-4z"/></svg>
+              <span>Vídeo (MP4)</span>
+            </button>
+            <button type="button" id="tabYtAudio" class="flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 text-slate-400 hover:text-white transition-all">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+              <span>Apenas Áudio (MP3)</span>
+            </button>
+          </div>
+
+          <!-- PAINEL DE VÍDEOS -->
+          <div id="panelYtVideo" class="space-y-2">
+            <!-- 1080p Full HD -->
+            <button type="button" id="btnYt1080" class="w-full p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-red-500 hover:from-red-500 hover:to-rose-500 text-white font-extrabold flex items-center justify-between gap-3 shadow-xl shadow-red-600/30 transition-all active:scale-[0.99] group text-left">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="w-10 h-10 rounded-xl bg-black/30 flex-shrink-0 flex items-center justify-center text-white">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 3v11m0 0l-4-4m4 4l4-4M5 20h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-sm sm:text-base font-extrabold tracking-tight">1080p Full HD</span>
+                    <span class="px-2 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-black uppercase">Máxima Nitidez</span>
+                  </div>
+                  <p class="text-xs text-rose-100/90 mt-0.5 truncate">1920x1080 • 60fps • Áudio e Vídeo Integrados</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-black/30 text-white">2 Anúncios</span>
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </button>
+
+            <!-- 720p HD -->
+            <button type="button" id="btnYt720" class="w-full p-3 sm:p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-850 text-slate-300 hover:text-white font-medium flex items-center justify-between gap-3 border border-slate-800 transition-all active:scale-[0.99] group text-left">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="w-9 h-9 rounded-xl bg-slate-800 flex-shrink-0 flex items-center justify-center text-slate-400 group-hover:text-white">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs sm:text-sm font-bold">720p HD</span>
+                    <span class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-bold">Padrão</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-0.5 truncate">1280x720 • Download Rápido</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-[11px] text-slate-400 px-2 py-0.5 rounded bg-slate-800">1 Anúncio</span>
+                <svg class="w-4 h-4 text-slate-500 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </button>
+
+            <!-- 480p / 360p -->
+            <button type="button" id="btnYt480" class="w-full p-2.5 sm:p-3 rounded-2xl bg-slate-900/60 hover:bg-slate-850 text-slate-400 hover:text-slate-200 font-medium flex items-center justify-between gap-3 border border-slate-800/80 transition-all active:scale-[0.99] group text-left">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="w-8 h-8 rounded-lg bg-slate-800/80 flex-shrink-0 flex items-center justify-center text-slate-500">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-xs font-semibold">480p / 360p SD</span>
+                  <p class="text-[10px] text-slate-500 truncate">Mais leve • Ideal para celular ou conexões lentas</p>
+                </div>
+              </div>
+              <span class="text-[10px] text-slate-400 px-2 py-0.5 rounded bg-slate-800">1 Anúncio</span>
+            </button>
+          </div>
+
+          <!-- PAINEL DE ÁUDIOS MP3 -->
+          <div id="panelYtAudio" class="space-y-2 hidden">
+            <!-- 320 kbps -->
+            <button type="button" id="btnYt320k" class="w-full p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-purple-900/70 via-indigo-900/70 to-purple-800/70 hover:from-purple-850 hover:to-indigo-850 text-purple-100 font-extrabold flex items-center justify-between gap-3 border border-purple-500/40 shadow-xl shadow-purple-950/40 transition-all active:scale-[0.99] group text-left">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/25 flex-shrink-0 flex items-center justify-center text-purple-300">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-sm sm:text-base font-extrabold text-white">MP3 320 kbps</span>
+                    <span class="px-2 py-0.5 rounded-full bg-purple-500/30 text-purple-200 text-[10px] font-black uppercase">Estúdio Hi-Fi</span>
+                  </div>
+                  <p class="text-xs text-purple-300/80 mt-0.5 truncate">Fidelidade sonora máxima sem perda audível</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-purple-950/70 text-purple-300">1 Anúncio</span>
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </button>
+
+            <!-- 192 kbps -->
+            <button type="button" id="btnYt192k" class="w-full p-3 sm:p-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-850 text-slate-300 hover:text-white font-medium flex items-center justify-between gap-3 border border-slate-800 transition-all active:scale-[0.99] group text-left">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="w-9 h-9 rounded-xl bg-slate-800 flex-shrink-0 flex items-center justify-center text-slate-400 group-hover:text-purple-300">
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs sm:text-sm font-bold">MP3 192 kbps</span>
+                    <span class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-bold">Recomendado</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-0.5 truncate">Equilíbrio perfeito de peso e alta fidelidade</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-[11px] text-slate-400 px-2 py-0.5 rounded bg-slate-800">1 Anúncio</span>
+                <svg class="w-4 h-4 text-slate-500 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </button>
+
+            <!-- 128 kbps -->
+            <button type="button" id="btnYt128k" class="w-full p-2.5 sm:p-3 rounded-2xl bg-slate-900/60 hover:bg-slate-850 text-slate-400 hover:text-slate-200 font-medium flex items-center justify-between gap-3 border border-slate-800/80 transition-all active:scale-[0.99] group text-left">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="w-8 h-8 rounded-lg bg-slate-800/80 flex-shrink-0 flex items-center justify-center text-slate-500">
+                  <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="text-xs font-semibold">MP3 128 kbps</span>
+                  <p class="text-[10px] text-slate-500 truncate">Arquivo compacto e super leve para WhatsApp</p>
+                </div>
+              </div>
+              <span class="text-[10px] text-slate-400 px-2 py-0.5 rounded bg-slate-800">1 Anúncio</span>
+            </button>
+          </div>
+        `;
+
+        // Lógica de alternância das abas
+        const tabVideo = ytWrapper.querySelector('#tabYtVideo');
+        const tabAudio = ytWrapper.querySelector('#tabYtAudio');
+        const panelVideo = ytWrapper.querySelector('#panelYtVideo');
+        const panelAudio = ytWrapper.querySelector('#panelYtAudio');
+
+        tabVideo.onclick = () => {
+          tabVideo.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 via-rose-600 to-red-500 text-white shadow-lg shadow-red-600/30 transition-all';
+          tabAudio.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 text-slate-400 hover:text-white transition-all';
+          panelVideo.classList.remove('hidden');
+          panelAudio.classList.add('hidden');
+        };
+
+        tabAudio.onclick = () => {
+          tabAudio.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 bg-gradient-to-r from-purple-700 via-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-600/30 transition-all';
+          tabVideo.className = 'flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 text-slate-400 hover:text-white transition-all';
+          panelAudio.classList.remove('hidden');
+          panelVideo.classList.add('hidden');
+        };
+
+        // Eventos dos botões de vídeo
+        ytWrapper.querySelector('#btnYt1080').onclick = () => iniciarFluxoDownload('video_1080p', 2);
+        ytWrapper.querySelector('#btnYt720').onclick = () => iniciarFluxoDownload('video_720p', 1);
+        ytWrapper.querySelector('#btnYt480').onclick = () => iniciarFluxoDownload('video_480p', 1);
+
+        // Eventos dos botões de áudio
+        ytWrapper.querySelector('#btnYt320k').onclick = () => iniciarFluxoDownload('audio_320k', 1);
+        ytWrapper.querySelector('#btnYt192k').onclick = () => iniciarFluxoDownload('audio_192k', 1);
+        ytWrapper.querySelector('#btnYt128k').onclick = () => iniciarFluxoDownload('audio_128k', 1);
+
+        downloadButtonsContainer.appendChild(ytWrapper);
 
       } else {
         // INSTAGRAM OU FACEBOOK
@@ -1390,7 +1598,7 @@
 
       } else {
         // Último anúncio concluído!
-        const isAudio = state.ad.targetFormat === 'audio_mp3';
+        const isAudio = String(state.ad.targetFormat || '').startsWith('audio_');
         const random7 = Math.floor(1000000 + Math.random() * 9000000);
         const filename = isAudio ? `vidsave-${random7}.mp3` : `vidsave-${random7}.mp4`;
         const downloadUrl = `/api/download/${state.currentSession.token}/${state.ad.targetFormat}/${filename}`;
@@ -1448,7 +1656,7 @@
 
     // DISPARADOR DE DOWNLOAD COM NOME PERSONALIZADO
     function dispararDownload(url, customFilename) {
-      const isAudio = url.includes('audio_mp3');
+      const isAudio = url.includes('audio_');
       const random7 = Math.floor(1000000 + Math.random() * 9000000);
       const filename = customFilename || (isAudio ? `vidsave-${random7}.mp3` : `vidsave-${random7}.mp4`);
 

@@ -27,6 +27,7 @@ const REGEX = {
   tiktok: /^(https?:\/\/)?([\w-]+\.)?(tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com)\//i,
   instagram: /^(https?:\/\/)?(www\.)?(instagram\.com|instagr\.am)\/(reel|reels|p|stories|tv)\//i,
   facebook: /^(https?:\/\/)?([\w-]+\.)?(facebook\.com|fb\.watch|fb\.com)\//i,
+  youtube: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i,
 };
 
 function detectPlatform(url) {
@@ -231,14 +232,151 @@ async function extractMeta(url, plataforma) {
   return await extractWithYtDlp(url);
 }
 
+// Extração YouTube Local via yt-dlp (Desenvolvimento)
+function extractYouTubeLocal(url) {
+  return new Promise((resolve, reject) => {
+    const bin = getYtDlpBinary();
+    const args = [
+      '--dump-single-json',
+      '--no-warnings',
+      '--no-playlist',
+      '--no-check-certificates',
+      url
+    ];
+
+    execFile(bin, args, { maxBuffer: 30 * 1024 * 1024, timeout: 45000 }, (error, stdout, stderr) => {
+      if (error) {
+        return reject(new Error('Falha ao processar este vídeo do YouTube. Verifique se o vídeo é público.'));
+      }
+      try {
+        const info = JSON.parse(stdout);
+        const formats = info.formats || [];
+
+        // Filtra apenas formatos com URL direta HTTPS
+        const direct = formats.filter(f => f.url && (f.protocol === 'https' || f.protocol === 'http'));
+
+        // Encontra formatos para 1080p, 720p, 480p e áudio
+        const f1080 = direct.find(f => f.format_id === '137') || direct.find(f => f.height === 1080) || direct.find(f => f.height >= 1080);
+        const f720 = direct.find(f => f.format_id === '136') || direct.find(f => f.height === 720) || direct.find(f => f.height >= 720);
+        const f480 = direct.find(f => f.format_id === '135') || direct.find(f => f.height === 480) || direct.find(f => f.height === 360);
+        const anyVideo = direct.filter(f => f.vcodec !== 'none').pop();
+
+        // Encontra fluxo de áudio direto
+        const fAudioM4A = direct.find(f => f.format_id && f.format_id.startsWith('140')) || direct.find(f => f.acodec !== 'none' && f.ext === 'm4a');
+        const fAudioOpus = direct.find(f => f.format_id && f.format_id.startsWith('251')) || direct.find(f => f.acodec !== 'none');
+        const audioUrl = fAudioM4A?.url || fAudioOpus?.url || (direct.find(f => f.acodec !== 'none')?.url);
+
+        const video1080 = f1080?.url || f720?.url || anyVideo?.url;
+        const video720 = f720?.url || f1080?.url || anyVideo?.url;
+        const video480 = f480?.url || f720?.url || anyVideo?.url;
+
+        if (!video1080 && !audioUrl) {
+          return reject(new Error('Nenhum fluxo direto de download disponível para este link.'));
+        }
+
+        const thumbnail = info.thumbnail || (info.thumbnails && info.thumbnails.pop()?.url) || `https://i.ytimg.com/vi/${info.id}/hqdefault.jpg`;
+        const isVertical = (info.width && info.height) ? (info.height > info.width) : false;
+
+        const headers = f1080?.http_headers || fAudioM4A?.http_headers || {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        };
+
+        resolve({
+          titulo: info.title || 'Vídeo do YouTube',
+          thumbnail: thumbnail,
+          isVertical: isVertical,
+          links: {
+            video_1080p: video1080,
+            video_720p: video720,
+            video_480p: video480,
+            audio_320k: audioUrl,
+            audio_192k: audioUrl,
+            audio_128k: audioUrl,
+          },
+          headers: headers,
+        });
+      } catch (e) {
+        reject(new Error('Erro ao processar formatos do vídeo do YouTube: ' + e.message));
+      }
+    });
+  });
+}
+
+// Extração YouTube (Nuvem Vercel via RapidAPI prioritária com Fallback local)
+async function extractYouTube(url) {
+  if (RAPIDAPI_KEY) {
+    try {
+      const { data } = await axios.post(
+        'https://social-download-all-in-one.p.rapidapi.com/v1/social/autolink',
+        { url },
+        {
+          timeout: 25000,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-rapidapi-key': RAPIDAPI_KEY,
+            'x-rapidapi-host': 'social-download-all-in-one.p.rapidapi.com',
+          },
+        }
+      );
+      if (data && !data.error && Array.isArray(data.medias)) {
+        const medias = data.medias.filter((m) => m.url);
+        const f1080 = medias.find((m) => m.type === 'video' && m.quality && m.quality.includes('1080'));
+        const f720 = medias.find((m) => m.type === 'video' && m.quality && m.quality.includes('720'));
+        const f480 = medias.find((m) => m.type === 'video' && m.quality && (m.quality.includes('480') || m.quality.includes('360')));
+        const anyVideo = medias.find((m) => m.type === 'video') || medias[0];
+
+        const fAudioM4A = medias.find((m) => m.type === 'audio' && m.extension === 'm4a');
+        const anyAudio = medias.find((m) => m.type === 'audio' || m.extension === 'mp3' || m.is_audio);
+        const audioUrl = fAudioM4A?.url || anyAudio?.url || anyVideo?.url;
+
+        const video1080 = f1080?.url || f720?.url || anyVideo?.url;
+        const video720 = f720?.url || f1080?.url || anyVideo?.url;
+        const video480 = f480?.url || f720?.url || anyVideo?.url;
+
+        return {
+          titulo: data.title || 'Vídeo do YouTube',
+          thumbnail: data.thumbnail || '',
+          isVertical: false,
+          links: {
+            video_1080p: video1080,
+            video_720p: video720,
+            video_480p: video480,
+            audio_320k: audioUrl,
+            audio_192k: audioUrl,
+            audio_128k: audioUrl,
+          },
+          headers: {},
+        };
+      }
+    } catch (err) {
+      console.warn('[RapidAPI YouTube]', err.message);
+    }
+  }
+
+  // Se estiver na Vercel e a API falhou
+  if (process.env.VERCEL) {
+    throw new Error('Não foi possível extrair este vídeo do YouTube. Verifique se o conteúdo é público.');
+  }
+
+  // Fallback para o motor local yt-dlp em desenvolvimento
+  return await extractYouTubeLocal(url);
+}
+
 app.post('/api/extract', async (req, res) => {
   try {
     const url = String(req.body?.url || '').trim();
     if (!url) return res.status(400).json({ sucesso: false, erro: 'Informe uma URL.' });
     const plataforma = detectPlatform(url);
-    if (!plataforma) return res.status(400).json({ sucesso: false, erro: 'Link não suportado. Use TikTok, Instagram ou Facebook.' });
+    if (!plataforma) return res.status(400).json({ sucesso: false, erro: 'Link não suportado. Use YouTube, TikTok, Instagram ou Facebook.' });
 
-    const result = plataforma === 'tiktok' ? await extractTikTok(url) : await extractMeta(url, plataforma);
+    let result;
+    if (plataforma === 'tiktok') {
+      result = await extractTikTok(url);
+    } else if (plataforma === 'youtube') {
+      result = await extractYouTube(url);
+    } else {
+      result = await extractMeta(url, plataforma);
+    }
 
     const token = crypto.randomBytes(24).toString('hex');
     downloadSessions.set(token, {
@@ -279,7 +417,7 @@ app.get(['/api/download/:token/:formato', '/api/download/:token/:formato/:filena
   const fileUrl = session.links[formato];
   if (!fileUrl) return res.status(404).send('Formato indisponível.');
 
-  const isAudio = formato === 'audio_mp3';
+  const isAudio = String(formato || '').startsWith('audio_');
   const random7 = Math.floor(1000000 + Math.random() * 9000000);
   const defaultFilename = isAudio ? `vidsave-${random7}.mp3` : `vidsave-${random7}.mp4`;
   const filename = req.params.filename || defaultFilename;
