@@ -438,14 +438,17 @@ app.get(['/api/download/:token/:formato', '/api/download/:token/:formato/:filena
       headers: reqHeaders,
     });
 
-    res.setHeader('Content-Type', isAudio ? 'audio/mpeg' : 'video/mp4');
+    res.setHeader('Content-Type', 'application/octet-stream');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('X-Content-Type-Options', 'nosniff');
     if (upstream.headers['content-length']) res.setHeader('Content-Length', upstream.headers['content-length']);
     upstream.data.pipe(res);
     req.on('close', () => upstream.data.destroy());
   } catch (err) {
-    console.warn('[download proxy fallback]', err.message, 'Redirecionando direto para a URL original...');
+    console.warn('[download proxy fallback]', err.message, 'Redirecionando...');
     if (!res.headersSent) {
+      res.setHeader('Content-Type', 'application/octet-stream');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
       return res.redirect(302, fileUrl);
     }
   }
