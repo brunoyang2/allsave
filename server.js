@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const crypto = require('crypto');
+const zlib = require('zlib');
 const path = require('path');
 const fs = require('fs');
 const { execFile } = require('child_process');
@@ -17,6 +18,79 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // token -> { links: { formato: url }, plataforma, headers: {}, expiresAt }
 const downloadSessions = new Map();
+
+// Gerador e resolvedor de tokens stateless compactos (Garante compatibilidade total na nuvem Vercel Serverless sem estourar o limite de cabeçalho HTTP 431)
+const SESSION_SECRET = process.env.SESSION_SECRET || 'vidsave-secure-token-engine-2026';
+const TOKEN_KEY = crypto.scryptSync(SESSION_SECRET, 'vidsave-salt-2026', 32);
+
+function generateFormatToken(linkUrl, headers) {
+  try {
+    const iv = crypto.randomBytes(12);
+    const dataBuf = Buffer.from(JSON.stringify({ u: linkUrl, h: headers || {}, exp: Date.now() + SESSION_TTL }));
+    const comp = zlib.deflateRawSync(dataBuf);
+    const cipher = crypto.createCipheriv('aes-256-gcm', TOKEN_KEY, iv);
+    const enc = Buffer.concat([cipher.update(comp), cipher.final()]);
+    const tag = cipher.getAuthTag();
+    return Buffer.concat([iv, tag, enc]).toString('base64url');
+  } catch (e) {
+    return null;
+  }
+}
+
+function resolveFormatToken(tokenStr) {
+  try {
+    const buf = Buffer.from(tokenStr, 'base64url');
+    if (buf.length < 28) return null;
+    const iv = buf.subarray(0, 12);
+    const tag = buf.subarray(12, 28);
+    const enc = buf.subarray(28);
+    const decipher = crypto.createDecipheriv('aes-256-gcm', TOKEN_KEY, iv);
+    decipher.setAuthTag(tag);
+    const dec = Buffer.concat([decipher.update(enc), decipher.final()]);
+    const decomp = zlib.inflateRawSync(dec);
+    const parsed = JSON.parse(decomp.toString('utf8'));
+    if (!parsed || parsed.exp < Date.now()) return null;
+    return { fileUrl: parsed.u, headers: parsed.h };
+  } catch (e) {
+    return null;
+  }
+}
+
+function generateSessionToken(payload) {
+  try {
+    const json = JSON.stringify(payload);
+    const iv = crypto.randomBytes(12);
+    const cipher = crypto.createCipheriv('aes-256-gcm', TOKEN_KEY, iv);
+    const enc = Buffer.concat([cipher.update(json, 'utf8'), cipher.final()]);
+    const tag = cipher.getAuthTag();
+    return Buffer.concat([iv, tag, enc]).toString('base64url');
+  } catch (e) {
+    return crypto.randomBytes(24).toString('hex');
+  }
+}
+
+function resolveSessionToken(tokenStr) {
+  // 1. Tenta Map local em memória (localhost)
+  const local = downloadSessions.get(tokenStr);
+  if (local && local.expiresAt >= Date.now()) return local;
+
+  // 2. Decodifica token stateless assinado (Vercel Serverless multi-instâncias)
+  try {
+    const buf = Buffer.from(tokenStr, 'base64url');
+    if (buf.length < 28) return null;
+    const iv = buf.subarray(0, 12);
+    const tag = buf.subarray(12, 28);
+    const enc = buf.subarray(28);
+    const decipher = crypto.createDecipheriv('aes-256-gcm', TOKEN_KEY, iv);
+    decipher.setAuthTag(tag);
+    const dec = Buffer.concat([decipher.update(enc), decipher.final()]);
+    const parsed = JSON.parse(dec.toString('utf8'));
+    if (!parsed || parsed.expiresAt < Date.now()) return null;
+    return parsed;
+  } catch (e) {
+    return null;
+  }
+}
 
 setInterval(() => {
   const now = Date.now();
@@ -378,15 +452,29 @@ app.post('/api/extract', async (req, res) => {
       result = await extractMeta(url, plataforma);
     }
 
-    const token = crypto.randomBytes(24).toString('hex');
-    downloadSessions.set(token, {
+    const sessionData = {
       links: result.links,
       plataforma,
       headers: result.headers || {},
       expiresAt: Date.now() + SESSION_TTL
-    });
+    };
 
-    res.json({ sucesso: true, token, plataforma, titulo: result.titulo, thumbnail: result.thumbnail });
+    // Gera tokens compactos para cada formato (~1KB cada, livre de erros de limite HTTP 431)
+    const tokens = {};
+    for (const [fmt, linkUrl] of Object.entries(result.links || {})) {
+      tokens[fmt] = generateFormatToken(linkUrl, result.headers);
+    }
+    const token = tokens[Object.keys(tokens)[0]] || generateSessionToken(sessionData);
+    downloadSessions.set(token, sessionData);
+
+    res.json({
+      sucesso: true,
+      token,
+      tokens,
+      plataforma,
+      titulo: result.titulo,
+      thumbnail: result.thumbnail
+    });
   } catch (err) {
     console.error('[extract]', err.message);
     res.status(err.status || 502).json({ sucesso: false, erro: err.message || 'Erro ao processar o link.' });
@@ -407,26 +495,39 @@ app.get('/api/thumb', async (req, res) => {
   }
 });
 
-app.get(['/api/download/:token/:formato', '/api/download/:token/:formato/:filename'], async (req, res) => {
-  const { token, formato } = req.params;
-  const session = downloadSessions.get(token);
-  if (!session || session.expiresAt < Date.now()) {
-    downloadSessions.delete(token);
-    return res.status(410).send('Link expirado. Volte e gere o download novamente.');
-  }
-  const fileUrl = session.links[formato];
-  if (!fileUrl) return res.status(404).send('Formato indisponível.');
+app.get(['/api/download/:token', '/api/download/:token/:filename', '/api/download/:token/:formato/:filename'], async (req, res) => {
+  const { token, formato, filename: reqFilename } = req.params;
+  let fileUrl = null;
+  let sessionHeaders = {};
 
-  const isAudio = String(formato || '').startsWith('audio_');
+  // 1. Tenta resolver como token de formato compacto (100% compatível com Vercel, ~1KB)
+  const resolvedFmt = resolveFormatToken(token);
+  if (resolvedFmt && resolvedFmt.fileUrl) {
+    fileUrl = resolvedFmt.fileUrl;
+    sessionHeaders = resolvedFmt.headers || {};
+  } else {
+    // 2. Tenta resolver via session map ou token de sessão legado
+    const session = resolveSessionToken(token);
+    if (session && session.links) {
+      fileUrl = session.links[formato] || Object.values(session.links)[0];
+      sessionHeaders = session.headers || {};
+    }
+  }
+
+  if (!fileUrl) {
+    return res.status(410).send('Link de download expirado ou inválido. Por favor, gere novamente.');
+  }
+
+  const isAudio = (req.path.includes('.mp3') || String(formato || '').startsWith('audio_'));
   const random7 = Math.floor(1000000 + Math.random() * 9000000);
   const defaultFilename = isAudio ? `vidsave-${random7}.mp3` : `vidsave-${random7}.mp4`;
-  const filename = req.params.filename || defaultFilename;
+  const filename = reqFilename || defaultFilename;
 
   try {
     const reqHeaders = {
-      'User-Agent': session.headers?.['User-Agent'] || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      ...(session.headers?.['Referer'] ? { Referer: session.headers['Referer'] } : {}),
-      ...(session.headers?.['cookies'] ? { Cookie: session.headers['cookies'] } : {}),
+      'User-Agent': sessionHeaders['User-Agent'] || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      ...(sessionHeaders['Referer'] ? { Referer: sessionHeaders['Referer'] } : {}),
+      ...(sessionHeaders['cookies'] ? { Cookie: sessionHeaders['cookies'] } : {}),
     };
 
     const upstream = await axios({
