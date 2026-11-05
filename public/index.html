@@ -25,7 +25,6 @@
   <script data-cfasync="false" src="https://bicea.org/14/aed8a7256e3ccac0b72d0bb213f70622"></script>
   <script data-cfasync="false" src="https://afders.org/1/1a38bdd16f58578a723320a902840a8c"></script>
   -->
-  <script async="async" data-cfasync="false" src="https://bicea.org/21/f9491e75d43741871ae3f65cbfae8ebb"></script>
 
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -359,16 +358,12 @@
 
           <!-- Container do Anúncio Oficial Adsterra -->
           <div id="homeAdContainer" class="w-full flex flex-col items-center justify-center min-h-[250px] overflow-hidden">
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '9d1ab1d44f14ad77df781e548699bca7',
-                'format' : 'iframe',
-                'height' : 250,
-                'width' : 300,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="https://bicea.org/22/9d1ab1d44f14ad77df781e548699bca7"></script>
+            <iframe 
+              src="/ads/adsterra-banner.html" 
+              class="w-[300px] h-[250px] border-0 rounded-xl overflow-hidden bg-transparent" 
+              scrolling="no" 
+              frameborder="0"
+            ></iframe>
           </div>
 
         </div>
@@ -427,10 +422,22 @@
           </span>
         </div>
 
-        <!-- CONTAINER DO ADSTERRA NATIVE BANNER (OFICIAL) -->
-        <div id="adsterraNativeWrapper" class="w-full flex flex-col items-center justify-center my-1 z-30">
+        <!-- BLOCO DE ANÚNCIO OFICIAL ADSTERRA (BANNER 300x250) -->
+        <div id="adsterraModalWrapper" class="w-full flex flex-col items-center justify-center my-2 z-30">
+          <div class="p-1 rounded-2xl bg-gradient-to-r from-amber-500/20 via-cyan-500/20 to-purple-500/20 shadow-2xl border border-slate-700/60 flex items-center justify-center">
+            <iframe 
+              id="adsterraModalIframe" 
+              src="/ads/adsterra-banner.html" 
+              class="w-[300px] h-[250px] border-0 rounded-xl overflow-hidden bg-slate-950/80 block" 
+              scrolling="no" 
+              frameborder="0"
+            ></iframe>
+          </div>
+        </div>
+
+        <!-- CONTAINER NATIVO / COMPLEMENTAR ADSTERRA -->
+        <div id="adsterraNativeWrapper" class="w-full flex flex-col items-center justify-center my-1 z-20">
           <div id="container-f9491e75d43741871ae3f65cbfae8ebb" class="w-full"></div>
-          <script async="async" data-cfasync="false" src="https://bicea.org/21/f9491e75d43741871ae3f65cbfae8ebb"></script>
         </div>
 
         <!-- ETAPA 1: 2 ANÚNCIOS VISUAIS INTERATIVOS -->
@@ -635,17 +642,16 @@
           </p>
 
           <!-- BOTÃO 1 (DESTAQUE MÁXIMO): BAIXAR VÍDEO -->
-          <a 
+          <button 
+            type="button"
             id="btnDownloadDiretoFinal" 
-            href="#"
-            download="vidsave-video.mp4"
             class="w-full max-w-xs px-6 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 text-slate-950 font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-2xl shadow-emerald-500/40 hover:scale-105 active:scale-95 transition-all mb-3 group cursor-pointer"
           >
             <svg class="w-5 h-5 flex-shrink-0 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
             </svg>
             <span id="btnDownloadDiretoTexto">BAIXAR VÍDEO AGORA</span>
-          </a>
+          </button>
 
           <!-- BOTÃO 2 (SECUNDÁRIO DESTACADO): VOLTAR / BAIXAR OUTRO VÍDEO -->
           <button 
@@ -1501,16 +1507,10 @@
 
       document.body.style.overflow = 'hidden'; // Bloqueia scroll de fundo
 
-      // Dispara o script do Native Banner do Adsterra caso ainda não tenha sido populado
-      const nativeContainer = document.getElementById('container-f9491e75d43741871ae3f65cbfae8ebb');
-      if (nativeContainer && nativeContainer.children.length === 0) {
-        try {
-          const s = document.createElement('script');
-          s.async = true;
-          s.setAttribute('data-cfasync', 'false');
-          s.src = 'https://bicea.org/21/f9491e75d43741871ae3f65cbfae8ebb';
-          nativeContainer.appendChild(s);
-        } catch (e) {}
+      // Atualiza o iframe do Adsterra para exibir anúncio fresco no início
+      const modalAdIframe = document.getElementById('adsterraModalIframe');
+      if (modalAdIframe) {
+        modalAdIframe.src = `/ads/adsterra-banner.html?step=1&t=${Date.now()}`;
       }
     }
 
@@ -1531,28 +1531,30 @@
 
       adStepBadge.textContent = `Etapa ${step}/${total}`;
 
-      // Verifica se o Adsterra já injetou anúncios reais no Native Banner
-      const nativeContainer = document.getElementById('container-f9491e75d43741871ae3f65cbfae8ebb');
-      const hasNativeLoaded = nativeContainer && (nativeContainer.children.length > 0 && nativeContainer.innerHTML.includes('<'));
+      // Atualiza o anúncio Adsterra no modal para cada etapa
+      const modalAdIframe = document.getElementById('adsterraModalIframe');
+      if (modalAdIframe) {
+        modalAdIframe.src = `/ads/adsterra-banner.html?step=${step}&t=${Date.now()}`;
+      }
 
       if (total === 2) {
         const isTikTok = state.currentSession?.plataforma === 'tiktok';
         if (step === 1) {
           adStepTitle.textContent = isTikTok ? "Etapa 1/2: Removendo marca d'água..." : "Etapa 1/2: Otimizando resolução Full HD 1080p...";
-          if (step1Ads) step1Ads.classList.toggle('hidden', hasNativeLoaded);
+          if (step1Ads) step1Ads.classList.remove('hidden');
           if (step2Ads) step2Ads.classList.add('hidden');
-          if (adCreativeBadge) adCreativeBadge.textContent = hasNativeLoaded ? "Anúncios Adsterra" : "Etapa 1: 2 Anúncios Ativos";
+          if (adCreativeBadge) adCreativeBadge.textContent = "Anúncio Adsterra Oficial";
         } else {
           adStepTitle.textContent = isTikTok ? "Etapa 2/2: Liberando qualidade máxima 1080p..." : "Etapa 2/2: Conectando aos servidores de alta velocidade...";
           if (step1Ads) step1Ads.classList.add('hidden');
-          if (step2Ads) step2Ads.classList.toggle('hidden', hasNativeLoaded);
-          if (adCreativeBadge) adCreativeBadge.textContent = hasNativeLoaded ? "Anúncios Adsterra" : "Etapa 2: 2 Anúncios Ativos";
+          if (step2Ads) step2Ads.classList.remove('hidden');
+          if (adCreativeBadge) adCreativeBadge.textContent = "Anúncio Adsterra Oficial";
         }
       } else {
         adStepTitle.textContent = "Etapa 1/1: Preparando download em alta fidelidade...";
-        if (step1Ads) step1Ads.classList.toggle('hidden', hasNativeLoaded);
+        if (step1Ads) step1Ads.classList.remove('hidden');
         if (step2Ads) step2Ads.classList.add('hidden');
-        if (adCreativeBadge) adCreativeBadge.textContent = hasNativeLoaded ? "Anúncios Adsterra" : "2 Anúncios Ativos";
+        if (adCreativeBadge) adCreativeBadge.textContent = "Anúncio Adsterra Oficial";
       }
 
       // Reinicia temporizador e barra de progresso
@@ -1611,18 +1613,15 @@
         const btnDireto = document.getElementById('btnDownloadDiretoFinal');
         const btnTexto = document.getElementById('btnDownloadDiretoTexto');
         if (btnDireto) {
-          btnDireto.href = downloadUrl;
-          btnDireto.setAttribute('download', filename);
           if (btnTexto) {
             btnTexto.textContent = isAudio ? 'BAIXAR ÁUDIO MP3 AGORA' : 'BAIXAR VÍDEO AGORA';
           }
-          // Clique direto nativo sem preventDefault para permitir download pelo navegador
-          btnDireto.onclick = () => {
-            mostrarAlerta(
-              'Download Iniciado! 🎉', 
-              `Transferindo <strong>${filename}</strong>. Caso não inicie em alguns segundos, <a href="${downloadUrl}" download="${filename}" class="underline font-extrabold text-cyan-300 hover:text-white ml-1">clique aqui</a>.`, 
-              'info'
-            );
+          btnDireto.onclick = (e) => {
+            if (e) e.preventDefault();
+            btnDireto.classList.add('scale-95');
+            setTimeout(() => btnDireto.classList.remove('scale-95'), 200);
+            if (btnTexto) btnTexto.textContent = '✓ Baixando Arquivo...';
+            iniciarDownloadSilencioso(downloadUrl, filename);
           };
         }
 
@@ -1633,7 +1632,7 @@
         if (adStepBadge) adStepBadge.textContent = 'Download Pronto';
         if (adStepTitle) adStepTitle.textContent = 'Qualidade máxima desbloqueada!';
 
-        // Download agora ocorre exclusivamente no clique do botão direto acima!
+        // Download agora ocorre no clique do botão direto acima sem trocar de página!
       }
     }
 
@@ -1654,24 +1653,35 @@
       );
     }
 
-    // DISPARADOR DE DOWNLOAD DIRETO (NUNCA ABRE NOVA ABA OU JANELA)
-    function dispararDownload(url, customFilename) {
-      const isAudio = url.includes('audio_');
-      const random7 = Math.floor(1000000 + Math.random() * 9000000);
-      const filename = customFilename || (isAudio ? `vidsave-${random7}.mp3` : `vidsave-${random7}.mp4`);
+    // DISPARADOR DE DOWNLOAD SILENCIOSO (NUNCA ABRE NOVA ABA OU OUTRA PÁGINA)
+    function iniciarDownloadSilencioso(downloadUrl, filename) {
+      // 1. Iframe invisível (garante que nenhuma nova aba ou reprodutor seja aberto)
+      let silentFrame = document.getElementById('vidsaveSilentFrame');
+      if (!silentFrame) {
+        silentFrame = document.createElement('iframe');
+        silentFrame.id = 'vidsaveSilentFrame';
+        silentFrame.style.display = 'none';
+        silentFrame.style.width = '0';
+        silentFrame.style.height = '0';
+        silentFrame.style.border = '0';
+        document.body.appendChild(silentFrame);
+      }
+      silentFrame.src = downloadUrl;
 
-      // Cria um link temporário na página e simula o clique do usuário
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => document.body.removeChild(a), 2000);
+      // 2. Dispara link nativo invisível com atributo download
+      const tempLink = document.createElement('a');
+      tempLink.href = downloadUrl;
+      tempLink.setAttribute('download', filename);
+      tempLink.style.display = 'none';
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      setTimeout(() => {
+        if (tempLink.parentNode) tempLink.parentNode.removeChild(tempLink);
+      }, 2000);
 
       mostrarAlerta(
         'Download Iniciado! 🎉', 
-        `Transferindo arquivo <strong>${filename}</strong> diretamente para o seu dispositivo.`, 
+        `Transferindo <strong>${filename}</strong> diretamente para o seu dispositivo sem sair da página.`, 
         'info'
       );
     }

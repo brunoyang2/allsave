@@ -534,23 +534,71 @@ app.get(['/api/download/:token', '/api/download/:token/:filename', '/api/downloa
       url: fileUrl,
       method: 'GET',
       responseType: 'stream',
-      timeout: 25000,
+      timeout: 30000,
       maxRedirects: 5,
       headers: reqHeaders,
     });
 
     res.setHeader('Content-Type', 'application/octet-stream');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Transfer-Encoding', 'binary');
     res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     if (upstream.headers['content-length']) res.setHeader('Content-Length', upstream.headers['content-length']);
+
     upstream.data.pipe(res);
     req.on('close', () => upstream.data.destroy());
   } catch (err) {
-    console.warn('[download proxy fallback]', err.message, 'Redirecionando...');
-    if (!res.headersSent) {
-      res.setHeader('Content-Type', 'application/octet-stream');
-      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      return res.redirect(302, fileUrl);
+    console.warn('[download proxy fallback]', err.message, 'Tentando fallback com stream nativo...');
+    try {
+      const client = fileUrl.startsWith('https') ? require('https') : require('http');
+      const proxyReq = client.get(fileUrl, {
+        headers: {
+          'User-Agent': sessionHeaders['User-Agent'] || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          ...(sessionHeaders['Referer'] ? { Referer: sessionHeaders['Referer'] } : {}),
+        },
+        timeout: 30000,
+        rejectUnauthorized: false
+      }, (proxyRes) => {
+        // Trata redirects 301/302 sem redirecionar a janela do usuário
+        if (proxyRes.statusCode >= 300 && proxyRes.statusCode < 400 && proxyRes.headers.location) {
+          const redirectUrl = proxyRes.headers.location;
+          const redirectClient = redirectUrl.startsWith('https') ? require('https') : require('http');
+          redirectClient.get(redirectUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0' },
+            timeout: 30000,
+            rejectUnauthorized: false
+          }, (finalRes) => {
+            res.setHeader('Content-Type', 'application/octet-stream');
+            res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+            res.setHeader('Content-Transfer-Encoding', 'binary');
+            res.setHeader('X-Content-Type-Options', 'nosniff');
+            if (finalRes.headers['content-length']) res.setHeader('Content-Length', finalRes.headers['content-length']);
+            finalRes.pipe(res);
+          }).on('error', () => {
+            if (!res.headersSent) res.redirect(302, redirectUrl);
+          });
+          return;
+        }
+
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.setHeader('Content-Transfer-Encoding', 'binary');
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+        if (proxyRes.headers['content-length']) res.setHeader('Content-Length', proxyRes.headers['content-length']);
+        proxyRes.pipe(res);
+      });
+
+      proxyReq.on('error', (e) => {
+        console.error('[native stream error]', e.message);
+        if (!res.headersSent) {
+          res.redirect(302, fileUrl);
+        }
+      });
+    } catch (e2) {
+      if (!res.headersSent) {
+        res.redirect(302, fileUrl);
+      }
     }
   }
 });
