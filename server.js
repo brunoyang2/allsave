@@ -407,10 +407,14 @@ async function extractYouTube(url) {
         const video720 = f720?.url || f1080?.url || anyVideo?.url;
         const video480 = f480?.url || f720?.url || anyVideo?.url;
 
+        const ytId = (url.match(/(?:v=|\/shorts\/|youtu\.be\/)([\w-]{11})/) || [])[1];
+        const thumbnail = data.thumbnail || (ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : '');
+        const isVertical = url.includes('/shorts/') || Boolean(data.is_vertical);
+
         return {
           titulo: data.title || 'Vídeo do YouTube',
-          thumbnail: data.thumbnail || '',
-          isVertical: false,
+          thumbnail: thumbnail,
+          isVertical: isVertical,
           links: {
             video_1080p: video1080,
             video_720p: video720,
